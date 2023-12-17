@@ -135,7 +135,7 @@ public class UserDAO {
 	 * 주어진 사용자 ID에 해당하는 사용자 정보를 데이터베이스에서 찾아 User 도메인 클래스에 
 	 * 저장하여 반환.
 	 */
-	public User findUser(String userId, String nickname) throws SQLException {
+    public User findUser(String userId, String nickname) throws SQLException {
         String sql = "SELECT nickname, password, userId, gender "
         			+ "FROM buddyUser "
         			+ "WHERE nickname=? ";              
@@ -162,9 +162,10 @@ public class UserDAO {
 		System.out.println("User not found in database for nickname: " + userId);
 		return null;
 	}
+
+
 	
-	
-	/**
+    /**
 	 * 주어진 사용자 ID에 해당하는 사용자가 존재하는지 검사 
 	 */
 	public boolean existingUser(String nickname) throws SQLException {
@@ -186,25 +187,25 @@ public class UserDAO {
 	}
 	
 	// 로그인 db 확인
-	public boolean validateUser(String nickname, String password) throws SQLException {
-		String sql = "SELECT count(*) FROM buddyUser WHERE nickname=? AND password=?";
-		jdbcUtil.setSqlAndParameters(sql,  new Object[] {nickname, password});
-		
-		try {
-			ResultSet rs = jdbcUtil.executeQuery();
-			if (rs.next()) {
-				int count = rs.getInt(1);
-				System.out.println("User validation result: " + count);
-				return (count == 1);
+		public boolean validateUser(String nickname, String password) throws SQLException {
+			String sql = "SELECT count(*) FROM buddyUser WHERE nickname=? AND password=?";
+			jdbcUtil.setSqlAndParameters(sql,  new Object[] {nickname, password});
+			
+			try {
+				ResultSet rs = jdbcUtil.executeQuery();
+				if (rs.next()) {
+					int count = rs.getInt(1);
+					System.out.println("User validation result: " + count);
+					return (count == 1);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				return false;
+			} finally {
+				jdbcUtil.close();
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
 			return false;
-		} finally {
-			jdbcUtil.close();
 		}
-		return false;
-	}
 	
 
 	

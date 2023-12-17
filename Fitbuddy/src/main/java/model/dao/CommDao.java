@@ -23,7 +23,7 @@ public class CommDao {
 	 */
 	public Community create(Community comm) throws SQLException {
 	    String sql = "INSERT INTO COMMWRITE (USERID, CMPOSTID, CONTENT, IMG, COMMDATE, USERPROFILE, USERNAME) VALUES (?, cmpostId_seq.nextval, ?, ?, SYSDATE, ?, ?)";
-	    Object[] param = new Object[] { comm.getCmUserId(), comm.getContent(), comm.getImg(), comm.getUserProfile(), comm.getUserName() };
+	    Object[] param = new Object[] { comm.getCmUserId(), comm.getCmUserId(), comm.getContent(), comm.getImg(), comm.getUserProfile(), comm.getUserName() };
 
 	    jdbcUtil.setSqlAndParameters(sql, param);
 

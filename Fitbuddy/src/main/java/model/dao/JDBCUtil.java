@@ -226,4 +226,9 @@ public class JDBCUtil {
 	public void printDataSourceStats() {
 		connMan.printDataSourceStats();
 	}
+
+	public Connection getConnection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -40,6 +40,11 @@ public class User {
 		this.gender = gender;
 	}
 	
+	public User(int userId, String nickname, String password) {
+		this.userId = userId;
+		this.nickname = nickname;
+		this.password = password;
+	}
 	
 	public User(String nickname,String password) {
         this.nickname = nickname;

@@ -6,46 +6,36 @@ import javax.servlet.http.HttpSession;
 
 import controller.Controller;
 import model.service.UserManager;
+import model.User; // User 모델 import
 
 public class LoginController implements Controller {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	String userId = request.getParameter("userId");
-    	String nickname = request.getParameter("nickname");
-		String password = request.getParameter("password");
-		
-		System.out.println("Attempting login with nickname: " + nickname + ", password: " + password);
-		
-		try {
-			// 모델에 로그인 처리를 위임
-			UserManager manager = UserManager.getInstance();
+        String userId = request.getParameter("userId");
+        String nickname = request.getParameter("nickname");
+        String password = request.getParameter("password");
 
-			boolean loginSuccess = manager.login(userId, nickname, password);
-	
-			if (loginSuccess) {
-                // 세션에 사용자 아이디 저장
+        try {
+            UserManager manager = UserManager.getInstance();
+            boolean loginSuccess = manager.login(request, userId, nickname, password); // 수정된 부분
+
+            if (loginSuccess) {
+                // 세션에 사용자 정보 저장
                 HttpSession session = request.getSession();
-                session.setAttribute(UserSessionUtils.USER_SESSION_KEY, userId);
+                User loggedInUser = manager.findUser(userId, nickname); // 사용자 정보 가져오기
+                session.setAttribute("loggedInUser", loggedInUser);
+                session.setAttribute("userId", userId);
 
-                // 로그인 정보 콘솔 출력
-                System.out.println("Login successful for userId: " + userId + ", nickname: " + nickname + ", password: " + password);
                 // 로그인 성공 시 "/"로 리다이렉트
                 return "redirect:/";
             } else {
-            	System.out.println("Login failed. Check credentials.");
-                // 로그인 실패 시 loginform.jsp로 이동
                 request.setAttribute("loginFailed", true);
                 return "/user/loginForm.jsp";
-//                return "redirect:/user/loginform";
-            }			
-
-		} catch (Exception e) {
-			/* UserNotFoundException이나 PasswordMismatchException 발생 시
-			 * 다시 login form을 사용자에게 전송하고 오류 메세지도 출력
-			 */
+            }
+        } catch (Exception e) {
             request.setAttribute("loginFailed", true);
-			request.setAttribute("exception", e);
-			return "redirect:/user/loginform";			
-		}	
+            request.setAttribute("exception", e);
+            return "redirect:/user/loginform";
+        }
     }
 }

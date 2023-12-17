@@ -1,13 +1,23 @@
-#container {
+
+    #container {
+      width: 375px;
+      height: 667px;
+      margin: 0px auto;
+      text-align: center;
+      background: black;
+      position: relative;
+      border: 1px solid black;
+    }
+/*#container {
     width: 375px;
     min-height: 667px;
     margin: 0px auto;
     text-align: center;
-    background: black; /* 검정색 배경 추가 */
+    background: black;
     position: relative;
     overflow: auto;
     border: 1px solid black;
-  }
+  } */
 
   /* image 1 */
 #logo {

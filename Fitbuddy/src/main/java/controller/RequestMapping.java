@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import controller.user.*;
 import controller.comm.*;
 import controller.mypage.*;
+import controller.todo.*;
 
 public class RequestMapping {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
@@ -56,10 +57,11 @@ public class RequestMapping {
         mappings.put("/mypage/myComment", new MyCommentController());
         
         // todo 관련 request URI 추가
-        mappings.put("/todo", new ForwardController("/todo/todomain.jsp"));
-        mappings.put("/todo/post", new ForwardController("/todo/todoPost.jsp"));
+        //mappings.put("/todo", new ListTodoController());
+        mappings.put("/todo", new CreateTodoController());
+        mappings.put("/todo/todopost", new CreateTodoCommController());
         
-        
+
         
         
         logger.info("Initialized Request Mapping!");

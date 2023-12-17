@@ -24,6 +24,7 @@ public class LoginController implements Controller {
                 HttpSession session = request.getSession();
                 User loggedInUser = manager.findUser(userId, nickname); // 사용자 정보 가져오기
                 session.setAttribute("loggedInUser", loggedInUser);
+                session.setAttribute("userId", userId);
 
                 // 로그인 성공 시 "/"로 리다이렉트
                 return "redirect:/";

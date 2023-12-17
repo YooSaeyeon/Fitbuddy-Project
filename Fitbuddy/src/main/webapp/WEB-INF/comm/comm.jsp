@@ -32,7 +32,7 @@ function commList(targetUri) {
 	            <img src="<c:url value='/images/back.png' />" />
 	        </div>
 	        <div id="logo">
-	            <img src="<c:url value='/images/commlogo.png' />" style="width: 110px" />
+	            <img src="<c:url value='/images/commlogo.png' />" onclick="redirectMainPage()" style="width: 110px" />
 	        </div>
 	        <div id="logout">
 	            <img src="<c:url value='/images/comm_logout.png' />" />
@@ -94,6 +94,11 @@ function commList(targetUri) {
             const selectedImage = document.getElementById('selectedImage');
             selectedImage.src = URL.createObjectURL(event.target.files[0]);
         });
+        
+     // main페이지 이동
+        function redirectMainPage() {
+            window.location.href = "${pageContext.request.contextPath}/";
+        }
     </script>
 
 </body>

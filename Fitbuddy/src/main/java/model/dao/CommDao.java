@@ -24,8 +24,8 @@ public class CommDao {
 	 * 커뮤니티 테이블에 새로운 행 생성 (PK 값은 Sequence를 이용하여 자동 생성)
 	 */
 	public Community create(Community comm) throws SQLException {
-	    String sql = "INSERT INTO COMMWRITE (USERID, CMPOSTID, CONTENT, IMG, COMMDATE, USERPROFILE, USERNAME) VALUES (?, cmpostId_seq.nextval, ?, ?, SYSDATE, ?, ?)";
-	    Object[] param = new Object[] { comm.getCmUserId(), comm.getContent(), comm.getImg(), comm.getUserProfile(), comm.getUserName() };
+	    String sql = "INSERT INTO COMMWRITE (USERID, CMPOSTID, CONTENT, COMMDATE, USERPROFILE, USERNAME) VALUES (?, cmpostId_seq.nextval, ?, ?, SYSDATE, ?, ?)";
+	    Object[] param = new Object[] { comm.getCmUserId(), comm.getContent(),  comm.getUserProfile(), comm.getUserName() };
 
 	    jdbcUtil.setSqlAndParameters(sql, param);
 
@@ -80,7 +80,7 @@ public class CommDao {
 	 * 저장하여 반환.
 	 */
 	public Community findCommunity(int commId) throws SQLException {
-		String sql = "SELECT CMPOSTID, CONTENT, IMG, COMMDATE " +
+		String sql = "SELECT CMPOSTID, CONTENT,  COMMDATE " +
 	              "FROM COMMWRITE c LEFT OUTER JOIN BUDDYUSER u ON c.USERID = u.USERID " +
 	              "WHERE CMPOSTID = ?";
 
@@ -93,7 +93,7 @@ public class CommDao {
 				        rs.getInt("USERID"),
 				        rs.getInt("CMPOSTID"),
 				        rs.getString("CONTENT"),
-				        rs.getString("IMG"),
+//				        rs.getString("IMG"),
 				        rs.getDate("COMMDATE"),
 				        rs.getString("USERPROFILE"),
 				        rs.getString("USERNAME"));
@@ -169,7 +169,7 @@ public class CommDao {
 	/*커뮤니티 글 목록 조회 부분*/
 	public List<Community> findCommunityPostList() throws SQLException {
 		   JDBCUtil jdbcUtil = new JDBCUtil();
-	       String sql = "SELECT CMPOSTID, USERID, CONTENT, IMG, USERPROFILE, COMMDATE, USERNAME FROM COMMWRITE " +
+	       String sql = "SELECT CMPOSTID, USERID, CONTENT, USERPROFILE, COMMDATE, USERNAME FROM COMMWRITE " +
 	                    "ORDER BY CMPOSTID";
 	       jdbcUtil.setSqlAndParameters(sql, null);
 
@@ -182,7 +182,7 @@ public class CommDao {
 	                      rs.getInt("USERID"),
 	                      rs.getInt("CMPOSTID"),
 	                      rs.getString("CONTENT"),
-	                      rs.getString("IMG"),
+//	                      rs.getString("IMG"),
 	                      rs.getDate("COMMDATE"),
 	                      rs.getString("USERPROFILE"),
 	                      rs.getString("USERNAME"));
@@ -201,12 +201,12 @@ public class CommDao {
 	   }
 
 	/*커뮤니티 글 상세 조회 부분*/
-	public Community findPostById(int cmPostId) throws SQLException {
-		 JDBCUtil jdbcUtil = new JDBCUtil(); 
-		String sql = "SELECT CMPOSTID, USERID, CONTENT, IMG, USERPROFILE, COMMDATE, USERNAME FROM COMMWRITE "
-	             + "WHERE CMPOSTID=?";
-		System.out.println("SQL Query: " + sql + ", CMPOSTID: " + cmPostId);
-	    jdbcUtil.setSqlAndParameters(sql, new Object[]{cmPostId});
+	public Community findPostById(int CMPOSTID) throws SQLException {
+	    JDBCUtil jdbcUtil = new JDBCUtil(); 
+	    String sql = "SELECT CMPOSTID, USERID, CONTENT, USERPROFILE, COMMDATE, USERNAME FROM COMMWRITE "
+	               + "WHERE CMPOSTID=?";
+	    System.out.println("SQL Query: " + sql + ", CMPOSTID: " + CMPOSTID);
+	    jdbcUtil.setSqlAndParameters(sql, new Object[]{CMPOSTID});
 	    
 	    try {
 	        ResultSet rs = jdbcUtil.executeQuery();
@@ -216,7 +216,6 @@ public class CommDao {
 	                    rs.getInt("USERID"),
 	                    rs.getInt("CMPOSTID"),
 	                    rs.getString("CONTENT"),
-	                    rs.getString("IMG"),
 	                    rs.getDate("COMMDATE"),
 	                    rs.getString("USERPROFILE"),
 	                    rs.getString("USERNAME"));

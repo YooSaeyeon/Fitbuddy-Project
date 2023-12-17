@@ -68,6 +68,7 @@ public class UserManager {
 			return user;
 		}
 	
+	/*커뮤니티 코드*/
 	public Community createCommunity(Community comm) throws SQLException {
 		return commDAO.create(comm);		
 	}
@@ -75,8 +76,8 @@ public class UserManager {
 	public List<Community> findCommunityPostList() throws SQLException {
 		return commDAO.findCommunityPostList();
 	}
-	public Community findPostById(int postId) throws SQLException {
-		return commDAO.findPostById(postId);		
+	public Community findPostById(int CMPOSTID) throws SQLException {
+		return commDAO.findPostById(CMPOSTID);		
 	}
 	
 	

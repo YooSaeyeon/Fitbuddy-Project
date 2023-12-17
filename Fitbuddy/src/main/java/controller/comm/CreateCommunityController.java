@@ -17,7 +17,7 @@ public class CreateCommunityController implements Controller {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 사용자가 입력한 값들을 받아옴
         String content = request.getParameter("content");
-        String img = request.getParameter("img");
+//        String img = request.getParameter("img");
 
         // 세션에서 사용자 ID 가져오기
         HttpSession session = request.getSession();
@@ -31,7 +31,7 @@ public class CreateCommunityController implements Controller {
             UserManager manager = UserManager.getInstance();
             
          // Community 객체를 생성할 때 빈 생성자 대신 생성자를 통해 필요한 값들을 초기화
-            Community comm = new Community(userId, content, img, null, null);
+            Community comm = new Community(userId, content,  null, null);
             manager.createCommunity(comm);
 
             log.debug("Create Community : {}", comm);
@@ -44,7 +44,7 @@ public class CreateCommunityController implements Controller {
             request.setAttribute("exception", e);
 
             // Comm 객체를 생성하지 않도록 수정
-            return "/comm/comm";
+            return "community/create";
         }
     }
 }

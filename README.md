@@ -4,22 +4,17 @@
 
 **사용자들은 다양한 운동 정보를 손쉽게 공유할 수 있고 서로간의 경쟁과 협력을 통한 동기부여를 주는 서비스**
 
-<<<<<<< HEAD
-=======
 
 **- 데이터베이스 시스템에 대한 기본 이론을 바탕으로 DBMS(Oracle)와 데이터베이스 모델링 도구(ER-Win)를 활용한 데이터베이스 설계 및 구축**
 **- SQL 및 JDBC API를 이용한 데이터베이스 응용 프로그램 개발**
 **- MVC 구조, DAO/DTO pattern 등을 이용한 체계적이고 효율적인 데이터베이스 응용 프로그램 개발**
 
 
->>>>>>> 61355196311f9ded0e7dee98ab3a4447149f189a
 주요 기능
 1. 운동 커뮤니티
 2. 운동 일정 기록
 3. 프로필
 4. 로그인 및 회원가입
-<<<<<<< HEAD
-=======
 
 역할 분담<br>
 유새연 -<br>
@@ -34,4 +29,3 @@
 ![image](https://github.com/YooSaeyeon/Fitbuddy-Project/assets/126438004/c25c6f58-501f-4c5c-afd0-210ebdd7000f)
 ![image](https://github.com/YooSaeyeon/Fitbuddy-Project/assets/126438004/80d4cdb1-9556-46d8-96f2-bf69266d9e43)
 ![image](https://github.com/YooSaeyeon/Fitbuddy-Project/assets/126438004/7124c90c-2dfb-4479-93c2-a416a12143a9)
->>>>>>> 61355196311f9ded0e7dee98ab3a4447149f189a

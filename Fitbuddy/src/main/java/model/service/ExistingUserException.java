@@ -7,7 +7,10 @@ public class ExistingUserException extends Exception {
 		super();
 	}
 
-	public ExistingUserException(String arg0) {
-		super(arg0);
-	}
+//	public ExistingUserException(String arg0) {
+//		super(arg0);
+//	}
+	public ExistingUserException(String message) {
+	        super(message); // 이 부분이 메시지를 설정하는 부분입니다.
+	    }
 }

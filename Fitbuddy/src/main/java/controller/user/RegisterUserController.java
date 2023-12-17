@@ -48,7 +48,8 @@ public class RegisterUserController implements Controller {
      		} catch (ExistingUserException e) {
      			// 이미 존재하는 사용자 예외 처리
      			request.setAttribute("existingUserMessage", e.getMessage());
-     			return "redirect:/user/register"; // 이미 존재하는 사용자 메시지를 포함하여 회원 가입 페이지로 이동
+     			
+     			return "/user/registerForm.jsp";//redirect말고 jsp로 !!
      		}
      		
     }

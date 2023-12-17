@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>Fitbuddy</name>
+=======
+	<name>Fitbuddy-Project</name>
+>>>>>>> 61355196311f9ded0e7dee98ab3a4447149f189a
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
+<<<<<<< HEAD
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
@@ -33,5 +38,9 @@
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
+=======
+	</buildSpec>
+	<natures>
+>>>>>>> 61355196311f9ded0e7dee98ab3a4447149f189a
 	</natures>
 </projectDescription>

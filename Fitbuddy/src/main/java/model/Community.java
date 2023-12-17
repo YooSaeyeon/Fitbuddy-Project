@@ -9,7 +9,7 @@ public class Community {
     private int cmUserId;
     private int cmPostId;
     private String content;
-    private String img;
+//    private String img;
     private Date commDate;
     private String userProfile;
     private String userName;
@@ -18,19 +18,19 @@ public class Community {
     public Community() { }
 
     // Constructor with all parameters
-    public Community(int cmUserId, int cmPostId, String content, String img, Date commDate, String userProfile, String userName) {
+    public Community(int cmUserId, int cmPostId, String content, Date commDate, String userProfile, String userName) {
         this.cmUserId = cmUserId;
         this.cmPostId = cmPostId;
         this.content = content;
-        this.img = img;
+//        this.img = img;
         this.commDate = commDate != null ? commDate : new Date();
         this.userProfile = userProfile;
         this.userName = userName;
     }
 
     // Constructor without cmPostId and commDate parameters (using default values)
-    public Community(int cmUserId, String content, String img, String userProfile, String userName) {
-        this(cmUserId, 0, content, img, new Date(), userProfile, userName);
+    public Community(int cmUserId, String content,  String userProfile, String userName) {
+        this(cmUserId, 0, content, new Date(), userProfile, userName);
     }
 
     // Getter and setter methods
@@ -59,13 +59,13 @@ public class Community {
         this.content = content;
     }
 
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
+//    public String getImg() {
+//        return img;
+//    }
+//
+//    public void setImg(String img) {
+//        this.img = img;
+//    }
 
     public Date getCommDate() {
         return commDate;
@@ -93,7 +93,7 @@ public class Community {
 
     @Override
     public String toString() {
-        return "Community [cmPostId=" + cmPostId + ", content=" + content + ", img=" + img + ", commDate=" + commDate +
+        return "Community [cmPostId=" + cmPostId + ", content=" + content + ",  commDate=" + commDate +
                 ", userProfile=" + userProfile + ", userName=" + userName + "]";
     }
 }

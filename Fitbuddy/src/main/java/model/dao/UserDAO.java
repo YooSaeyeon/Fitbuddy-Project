@@ -116,6 +116,11 @@ public class UserDAO {
 			}
 			return false;
 		}
+
+		public void updateProfilePhoto(int userId, String filename) {
+			// TODO Auto-generated method stub
+			
+		}
 	
 
 	

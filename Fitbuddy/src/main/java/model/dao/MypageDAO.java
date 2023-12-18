@@ -19,26 +19,28 @@ public class MypageDAO {
 
     public List<Community> getUserPosts(int userId) throws SQLException {
         List<Community> userPosts = new ArrayList<>();
-        String query = "SELECT * FROM Community WHERE cmUserId = ?";
+        String query = "SELECT CMPOSTID, USERID, CONTENT, USERPROFILE, COMMDATE, USERNAME FROM COMMWRITE " +
+                "WHERE USERID = ? ORDER BY CMPOSTID";
 
         try (Connection conn = jdbcUtil.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setInt(1, userId);
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Community post = new Community();
-                    post.setCmPostId(resultSet.getInt("cmPostId"));
-                    post.setContent(resultSet.getString("content"));
-                    // 나머지 필드들도 설정
-
-                    userPosts.add(post);
+            List<Community> userCommList = new ArrayList<>();
+            try (ResultSet rs = statement.executeQuery()) {
+            	 Community comm = new Community(
+                         rs.getInt("USERID"),
+                         rs.getInt("CMPOSTID"),
+                         rs.getString("CONTENT"),
+                         rs.getDate("COMMDATE"),
+                         rs.getString("USERPROFILE"),
+                         rs.getString("USERNAME"));
+                 userCommList.add(comm);
                 }
+            return userCommList;
             }
         }
-
-        return userPosts;
-    }
+ 
 
     public User getUserById(int userId) throws SQLException {
         User user = null;
@@ -53,6 +55,7 @@ public class MypageDAO {
                     user = new User();
                     user.setUserId(resultSet.getInt("userId"));
                     user.setNickname(resultSet.getString("nickname"));
+                    user.setPhoto(resultSet.getString("photo"));
                     // 나머지 필드들도 설정
                 }
             }

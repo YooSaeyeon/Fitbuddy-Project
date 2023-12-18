@@ -16,7 +16,7 @@ public class CreateCommunityController implements Controller {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
     	 if (request.getMethod().equals("GET")) {
-             // 회원 가입 폼 요청 시 폼으로 이동
+
              return "/comm/comm.jsp";
          }
         String content = request.getParameter("content");

@@ -15,7 +15,10 @@ public class CreateCommunityController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // 사용자가 입력한 값들을 받아옴
+    	 if (request.getMethod().equals("GET")) {
+
+             return "/comm/comm.jsp";
+         }
         String content = request.getParameter("content");
 //        String img = request.getParameter("img");
 
@@ -24,7 +27,7 @@ public class CreateCommunityController implements Controller {
         Object userIdObject = session.getAttribute("userId");
 
         try {
-            int userId = (userIdObject != null) ? Integer.parseInt(userIdObject.toString()) : 1;
+            int userId = (userIdObject != null) ? Integer.parseInt(userIdObject.toString()) : 17;
             log.debug("User ID from session: {}", userId);
 
             // UserManager를 통해 커뮤니티 생성

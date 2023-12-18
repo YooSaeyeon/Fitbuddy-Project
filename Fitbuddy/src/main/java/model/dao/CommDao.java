@@ -24,8 +24,8 @@ public class CommDao {
 	 * 커뮤니티 테이블에 새로운 행 생성 (PK 값은 Sequence를 이용하여 자동 생성)
 	 */
 	public Community create(Community comm) throws SQLException {
-	    String sql = "INSERT INTO COMMWRITE (USERID, CMPOSTID, CONTENT, COMMDATE, USERPROFILE, USERNAME) VALUES (?, cmpostId_seq.nextval, ?, ?, SYSDATE, ?, ?)";
-	    Object[] param = new Object[] { comm.getCmUserId(), comm.getContent(),  comm.getUserProfile(), comm.getUserName() };
+		String sql = "INSERT INTO COMMWRITE (USERID, CMPOSTID, CONTENT, COMMDATE, USERPROFILE, USERNAME) VALUES (?, cmpostId_seq.nextval, ?, SYSDATE, ?, ?)";
+		Object[] param = new Object[] { comm.getCmUserId(), comm.getContent(), comm.getUserProfile(), comm.getUserName() };
 
 	    jdbcUtil.setSqlAndParameters(sql, param);
 

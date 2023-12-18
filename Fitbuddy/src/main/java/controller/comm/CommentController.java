@@ -26,7 +26,15 @@ public class CommentController implements Controller {
             int cmUserId = (userIdObject != null) ? Integer.parseInt(userIdObject.toString()) : 17;
 
             String userProfile = ""; 
-//            String userName = ""; 
+            // Instantiate Comment and set its properties
+            Comment comment = new Comment();
+            comment.setCmPostId(cmPostId);
+            comment.setCmUserId(cmUserId);
+            comment.setContent(request.getParameter("content"));
+            comment.setUserProfile(userProfile);
+
+            CommentDao commentDao = new CommentDao();
+            Comment createdComment = commentDao.create(comment);
 
 
             return "redirect:/community/view/" + cmPostId;

@@ -29,25 +29,41 @@
                 </div> -->
                
                 <div id="detail_date">${community.commDate}</div>
+                
+                <hr style="height: 2px; margin-top: 40px; background-color: white" />
                 <div id="detail_content">${community.content}</div>
             </div>
-        </div>
+         <hr style="height: 2px; margin-top: 40px; background-color: white" />
      <!-- 댓글 부분 추후 추가 -->
-     <c:forEach var="comment" items="${commentList}">
-    <p>${comment.content}</p>
-	</c:forEach>	
-     <!-- 댓글 부분 추가 -->
-    <div id="comment_section">
-    <!-- 디버그 코드 시작 -->
- 
-    <c:out value="${community.cmPostId}" />
-    <!-- 디버그 코드 끝 -->
+    <div id="commentList1">
+    <c:forEach var="comment" items="${commentList}">
+        <div class="commentContainer">
+            <div class="commentProfileImage">
+                <c:choose>
+				    <c:when test="${empty comment.userProfile}">
+				        <img src="<c:url value='/images/commentProfile.png' />">
+				    </c:when>
+				    <c:otherwise>
+				        <img src="<c:url value='${comment.userProfile}' />">
+				    </c:otherwise>
+				</c:choose>
+            </div>
+            <div class="profileInfo">
+                <div class="comName">${comment.cmUserId}</div>
+                <div class="comContent">${comment.content}</div>
+            </div>
+        </div>
+    </c:forEach>
+	</div>
+
+   <div id="commentForm1">
     <form action="<c:url value='/community/comment' />" method="post">
-       <input type="hidden" name="cmPostId" value="${community.cmPostId}" />
+        <input type="hidden" name="cmPostId" value="${community.cmPostId}" />
         <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
-        <button type="submit">댓글 달기</button>
+        <button type="submit"><img src="<c:url value='/images/commentClick.png' />"></button>
     </form>
-    </div>
-    </div>      
+	</div>
+	 </div>
+   </div>      
 </body>
 </html>

@@ -95,6 +95,12 @@ public class UserManager {
 	public Community createCommunity(Community comm) throws SQLException {
 		return commDAO.create(comm);		
 	}
+	public List<Community> findCommunityPostList() throws SQLException {
+		return commDAO.findCommunityPostList();
+	}
+	public Community findPostById(int CMPOSTID) throws SQLException {
+		return commDAO.findPostById(CMPOSTID);		
+	}
 	
 	public TodoDTO createTodo(TodoDTO todo) throws SQLException {
 	    return todoDAO.create(todo);    
@@ -104,10 +110,7 @@ public class UserManager {
 	    return todoCommentDAO.create(todo);    
 	}
 
-	
-	public List<Community> findCommunityList() throws SQLException {
-		return commDAO.findCommunityList();
-	}
+
 	
 	public List<TodoDTO> findTodoListByUserId(int userId) throws SQLException {
 	    return todoDAO.findTodoListByUserId(userId);

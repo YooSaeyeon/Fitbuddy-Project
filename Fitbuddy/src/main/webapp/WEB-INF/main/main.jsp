@@ -137,22 +137,22 @@
          // 이 부분 url만 수정
          // community 페이지 이동 
         function redirectToCommPage() {
-            window.location.href = "${pageContext.request.contextPath}/comm/comm";
+            window.location.href = "${pageContext.request.contextPath}/community/commList";
         }
          
          // todo 페이지 이동 
         function redirectToTodoPage() {
-            window.location.href = "${pageContext.request.contextPath}/comm/comm";
+            window.location.href = "${pageContext.request.contextPath}/todo";
         }
          
          // mypage 페이지 이동 
         function redirectToMypagePage() {
-            window.location.href = "${pageContext.request.contextPath}/comm/comm";
+            window.location.href = "${pageContext.request.contextPath}/mypage/profile";
         }
          
          // login 페이지 이동 
         function redirectToLoginPage() {
-            window.location.href = "${pageContext.request.contextPath}/comm/comm";
+            window.location.href = "${pageContext.request.contextPath}/user/loginform";
         }
     </script>
 </body>

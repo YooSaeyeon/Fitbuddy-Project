@@ -38,13 +38,14 @@
 	font-weight: 600;
 }
 
-body {
-	margin: 0;
-	padding: 0;
-	background: white;
-	font-family: Inter, sans-serif;
-	position: relative;
-}
+		body {
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    height: 100vh;
+		    margin: 0;
+		    
+		}
 
 #container {
 	width: 390px;

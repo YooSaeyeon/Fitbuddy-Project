@@ -15,8 +15,6 @@
 		    margin: 0;
 		    
 		}
-		
-		
         #container {
           width: 390px;
           min-height: 789px;
@@ -28,7 +26,7 @@
           border: 1px solid black;
         }
         #logo {
-          margin-top: 40px;
+          margin-top: 100px;
         }
         #box {
           margin-top: 15px;
@@ -117,14 +115,14 @@
         <div>
            <!-- login 페이지로 이동시키도록 수정 -->
            <a href="${pageContext.request.contextPath}/user/loginform">
-            <img src="${pageContext.request.contextPath}/images/logout.png" 
-            onclick="login()"
+            <img src="${pageContext.request.contextPath}/images/로그인.png" 
+            onclick="login()"a
             style="margin-top: 20px; margin-left: 7px" />
             </a>
  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
            <!-- 회원가입 페이지로 이동시키도록 수정 -->
            <a href="${pageContext.request.contextPath}/user/register">
-            <img src="${pageContext.request.contextPath}/images/logout.png" 
+            <img src="${pageContext.request.contextPath}/images/회원가입.png" 
             onclick="login()"
             style="margin-top: 20px; margin-left: 7px" />
             </a>
@@ -146,28 +144,33 @@
          
         // main페이지 이동
         function redirectMainPage() {
-            window.location.href = "${pageContext.request.contextPath}/";
+        	alert("로그인해 주세요");
+            window.location.href = "${pageContext.request.contextPath}/user/loginform";
         }
          
          
          // community 페이지 이동 
         function redirectToCommPage() {
-            window.location.href = "${pageContext.request.contextPath}/comm/comm";
+        	alert("로그인해 주세요");
+            window.location.href = "${pageContext.request.contextPath}/user/loginform";
         }
          
          // todo 페이지 이동 
         function redirectToTodoPage() {
-            window.location.href = "${pageContext.request.contextPath}/todo";
+        	alert("로그인해 주세요");
+            window.location.href = "${pageContext.request.contextPath}/user/loginform";
         }
          
          // mypage 페이지 이동 
         function redirectToMypagePage() {
-            window.location.href = "${pageContext.request.contextPath}/comm/comm";
+        	alert("로그인해 주세요");
+            window.location.href = "${pageContext.request.contextPath}/user/loginform";
         }
          
          // login 페이지 이동 
         function redirectToLoginPage() {
-            window.location.href = "${pageContext.request.contextPath}/comm/comm";
+        	alert("로그인해 주세요");
+            window.location.href = "${pageContext.request.contextPath}/user/loginform";
         }
     </script>
 </body>

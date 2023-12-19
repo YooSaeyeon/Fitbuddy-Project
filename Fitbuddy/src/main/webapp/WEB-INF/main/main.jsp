@@ -15,10 +15,9 @@
 		    margin: 0;
 		    
 		}
-		
         #container {
-          width: 375px;
-          min-height: 667px;
+          width: 390px;
+          min-height: 789px;
           margin: 0px auto;
           text-align: center;
           background: black;
@@ -27,16 +26,16 @@
           border: 1px solid black;
         }
         #logo {
-          margin-top: 40px;
+          margin-top: 100px;
         }
         #box {
           margin-top: 15px;
         }
         #box2 {
           position: relative;
-          width: 270px;
+          width: 250px;
           height: 87px;
-          left: 14%;
+          left: 18%;
           right: 51.79%;
           margin-top: 15%;
           bottom: 47.79%;
@@ -54,9 +53,9 @@
         }
         #box3 {
           position: relative;
-          width: 130px;
+          width: 120px;
           height: 87px;
-          left: 13.5%;
+          left: 18%;
           right: 51.79%;
           margin-top: 3%;
           bottom: 47.79%;
@@ -74,11 +73,11 @@
         }
         #box4 {
           position: relative;
-          width: 130px;
+          width: 120px;
           height: 87px;
-          left: 53%;
+          left: 51.5%;
           right: 51.79%;
-          margin-top: -37.5%;
+          margin-top: -35.5%;
           bottom: 47.79%;
           background: #ffffff;
           box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
@@ -111,7 +110,7 @@
 <body>
     <div id="container">
         <div id="logo">
-            <img src="${pageContext.request.contextPath}/images/image1.png" alt="logo" />
+            <img src="${pageContext.request.contextPath}/images/image1.png" onclick="redirectMainPage()" alt="logo" />
         </div>
         <div>
            <!-- login 페이지로 이동시키도록 수정 -->
@@ -126,7 +125,7 @@
             <div id="box2" onclick="redirectToCommPage()">커뮤니티</div>
             
             <!-- todo 페이지로 이동시키도록 수정 -->
-            <div id="box3" onclick="todo()">운동 기록</div>
+            <div id="box3" onclick="redirectToTodoPage()">운동 기록</div>
             
             <!-- mypage로 이동시키도록 수정 -->
             <div id="box4" onclick="redirectToMypagePage()">마이페이지</div>
@@ -135,6 +134,13 @@
 
     <script>
          // 이 부분 url만 수정
+         
+        // main페이지 이동
+        function redirectMainPage() {
+            window.location.href = "${pageContext.request.contextPath}/";
+        }
+         
+         
          // community 페이지 이동 
         function redirectToCommPage() {
             window.location.href = "${pageContext.request.contextPath}/community/commList";
@@ -147,12 +153,12 @@
          
          // mypage 페이지 이동 
         function redirectToMypagePage() {
-            window.location.href = "${pageContext.request.contextPath}/mypage/profile";
+            window.location.href = "${pageContext.request.contextPath}/comm/comm";
         }
          
          // login 페이지 이동 
         function redirectToLoginPage() {
-            window.location.href = "${pageContext.request.contextPath}/user/loginform";
+            window.location.href = "${pageContext.request.contextPath}/comm/comm";
         }
     </script>
 </body>

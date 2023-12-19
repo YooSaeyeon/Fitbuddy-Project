@@ -28,9 +28,6 @@ function commList(targetUri) {
 	<!-- registration form  -->
 	<form name="commForm" method="POST" action="<c:url value='/community/create' />">
 	    <div id="container">
-	        <div id="back" onClick="location.href='commmain.html'">
-	            <img src="<c:url value='/images/back.png' />" />
-	        </div>
 	        <div id="logo">
 	            <img src="<c:url value='/images/commlogo.png' />" onclick="redirectMainPage()" style="width: 110px" />
 	        </div>
@@ -38,7 +35,7 @@ function commList(targetUri) {
 	            <img src="<c:url value='/images/comm_logout.png' />" />
 	        </div>
 	
-	        <hr style="height: 2px; margin-top: 40px; background-color: white" />
+	        <hr style="height: 2px; margin-top: 45px; background-color: white" />
 	
 	        <div id="scroll">
 	            <div id="whiteBox">
@@ -60,7 +57,7 @@ function commList(targetUri) {
 	
                         <tr>
                             <td class="commCell">
-                                <input type="text" style="width: 300; height: 40px; margin-left: 18px;" name="content" 
+                                <input type="text" style="width: 300; height: 350px; margin-left: 18px;" name="content" 
                                     <c:if test="${creationFailed}">value="${comm.content}"</c:if>>
                             </td>
                         </tr>   
@@ -77,6 +74,7 @@ function commList(targetUri) {
 	                  width: 281px;
 	                  height: 44px;
 	                  left: 54px;
+	                  margin-top: 50px;
 	                  
 	                  background: #C2AC18;
 	                  border-radius: 20px;" 

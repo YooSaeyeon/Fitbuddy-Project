@@ -109,6 +109,25 @@ public class UserManager {
 		return commDAO.findPostById(CMPOSTID);		
 	}
 	
+	public User getUserById(int userId) {
+		 try {
+           User user = commDAO.getUserById(userId);
+
+           if (user != null) {
+               System.out.println("User ID in COMM: " + user.getUserId());
+           } else {
+               System.out.println("User is null in comm");
+           }
+
+           return user;
+       } catch (Exception e) {
+           e.printStackTrace();
+           return null;
+       }
+	}
+	
+	
+	
 	public TodoDTO createTodo(TodoDTO todo) throws SQLException {
 	    return todoDAO.create(todo);    
 	}
@@ -122,10 +141,6 @@ public class UserManager {
 	public List<TodoDTO> findTodoListByUserId(int userId) throws SQLException {
 	    return todoDAO.findTodoListByUserId(userId);
 	}
-	
-//	public List<User> findCommunityMembers(int commId) throws SQLException {
-//		return userDAO.findUsersInCommunity(commId);
-//	}
 	
 	public UserDAO getUserDAO() {
 		return this.userDAO;

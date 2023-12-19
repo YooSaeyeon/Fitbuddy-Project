@@ -16,14 +16,6 @@ public class ListCommunityController implements Controller {
     	UserManager manager = UserManager.getInstance();
 		List<Community> commList = manager.findCommunityPostList();
 		
-//		for (Community comm : commList) {
-//		    int userId = comm.getCmUserId();
-//		    String nickname = manager.findnameByUserId(userId);
-//		    if (nickname != null) {
-//		        comm.setUserName(nickname);
-//		    }
-//		}
-		
 		request.setAttribute("commList", commList);				
 		return "/comm/commList.jsp";       
     }

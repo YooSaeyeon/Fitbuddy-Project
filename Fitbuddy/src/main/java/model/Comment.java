@@ -7,15 +7,17 @@ public class Comment {
     private int cmUserId;
     private String content;
     private String userProfile;
-
+    private String userName;
+    
     public Comment() { }
 
-    public Comment(int cmCommentId, int cmPostId, int cmUserId, String content, String userProfile) {
+    public Comment(int cmCommentId, int cmPostId, int cmUserId, String content, String userProfile ,String userName) {
         this.cmCommentId = cmCommentId;
         this.cmPostId = cmPostId;
         this.cmUserId = cmUserId;
         this.content = content;
         this.userProfile = userProfile;
+        this.userName=userName;
     }
     
     public int getCmUserId() {
@@ -59,17 +61,17 @@ public class Comment {
         this.userProfile = userProfile;
     }
 
-//    public String getUserName() {
-//        return userName;
-//    }
-//
-//    public void setUserName(String userName) {
-//        this.userName = userName;
-//    }
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     @Override
     public String toString() {
         return "Comment [cmCommentId="+cmCommentId+",cmPostId=" + cmPostId + ", content=" + content + 
-                ", userProfile=" + userProfile +  ",cmUserId=" + cmUserId + "]";
+                ", userProfile=" + userProfile +"userName="+userName+",cmUserId=" + cmUserId + "]";
     }
 }

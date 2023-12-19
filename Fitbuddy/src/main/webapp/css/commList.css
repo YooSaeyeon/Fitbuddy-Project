@@ -179,25 +179,26 @@
     margin-bottom: 10px;
     background-color: #000000;
     border: 2px solid #ffffff;
+    color: #ffffff; /* 글씨 색상을 화이트로 설정 */
 }
 
-.commentProfileImage img {
+.commentContainer .commentProfileImage img {
     width: 50px;
     height: 50px;
     border-radius: 25px;
     margin-right: 10px;
 }
 
-.profileInfo {
-    color: #ffffff;
+.commentContainer .profileInfo {
+    flex: 1; /* 남은 공간을 차지하도록 설정 */
 }
 
-.comName {
+.commentContainer .comName {
     font-size: 16px;
     font-weight: bold;
 }
 
-.comContent {
+.commentContainer .comContent {
     font-size: 14px;
 }
 

@@ -1,6 +1,5 @@
 package model.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,49 +16,54 @@ public class MypageDAO {
         jdbcUtil = new JDBCUtil();
     }
 
-    public List<Community> getUserPosts(int userId) throws SQLException {
-        List<Community> userPosts = new ArrayList<>();
-        String query = "SELECT * FROM Community WHERE cmUserId = ?";
+    public List<Community> getUserPosts(int userId) {
+        List<Community> userCommList = new ArrayList<>();
+        String query = "SELECT CMPOSTID, USERID, CONTENT, USERPROFILE, COMMDATE, USERNAME FROM COMMWRITE " +
+                "WHERE USERID = ? ORDER BY CMPOSTID";
 
-        try (Connection conn = jdbcUtil.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query)) {
-            statement.setInt(1, userId);
+        Object[] parameters = { userId };
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Community post = new Community();
-                    post.setCmPostId(resultSet.getInt("cmPostId"));
-                    post.setContent(resultSet.getString("content"));
-                    // 나머지 필드들도 설정
+        jdbcUtil.setSqlAndParameters(query, parameters);
 
-                    userPosts.add(post);
-                }
+        try (ResultSet rs = jdbcUtil.executeQuery()) {
+            while (rs.next()) {
+                Community comm = new Community(
+                        rs.getInt("USERID"),
+                        rs.getInt("CMPOSTID"),
+                        rs.getString("CONTENT"),
+                        rs.getDate("COMMDATE"),
+                        rs.getString("USERPROFILE"),
+                        rs.getString("USERNAME"));
+                userCommList.add(comm);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        return userPosts;
+        return userCommList;
     }
 
-    public User getUserById(int userId) throws SQLException {
+    public User getUserById(int userId) {
         User user = null;
-        String query = "SELECT * FROM User WHERE userId = ?";
+        String query = "SELECT * FROM buddyUser WHERE userId = ?";
 
-        try (Connection conn = jdbcUtil.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query)) {
-            statement.setInt(1, userId);
+        Object[] parameters = { userId };
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    user = new User();
-                    user.setUserId(resultSet.getInt("userId"));
-                    user.setNickname(resultSet.getString("nickname"));
-                    // 나머지 필드들도 설정
-                }
+        jdbcUtil.setSqlAndParameters(query, parameters);
+
+        try (ResultSet resultSet = jdbcUtil.executeQuery()) {
+            if (resultSet.next()) {
+                user = new User();
+                user.setUserId(resultSet.getInt("userId"));
+                user.setNickname(resultSet.getString("nickname"));
+                user.setPhoto(resultSet.getString("photo"));
+        
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return user;
     }
 
-    // 다른 필요한 메서드들을 추가로 구현해야 함
 }

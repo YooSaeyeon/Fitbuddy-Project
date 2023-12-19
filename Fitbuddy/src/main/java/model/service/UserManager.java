@@ -92,6 +92,13 @@ public class UserManager {
 			return user;
 		}
 	
+	public void updateProfilePhoto(int userId, String filename) {
+	    // UserDAO를 생성하고 해당 메서드를 호출해 사용자의 프로필 사진을 업데이트합니다.
+		UserDAO userDAO = new UserDAO();
+		userDAO.updateProfilePhoto(userId, filename);
+		System.out.println("프로필 사진 업데이트 완료");
+	}
+	
 	public Community createCommunity(Community comm) throws SQLException {
 		return commDAO.create(comm);		
 	}

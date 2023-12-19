@@ -173,92 +173,104 @@
     </style>
 </head>
 <body>
-   <div id="container">
-       <div id="logo" onclick="redirectMainPage()">
-            <img src="${pageContext.request.contextPath}/images/image1.png" onclick="redirectMainPage()" alt="logo" />
-        </div>
-          <div id="logout" onclick="goLogout()">
-           <img src="<c:url value='/images/comm_logout.png' />" />
-       </div>
-       <hr style="height: 2px; margin-top: 20px; background-color: white" />
-       
-       <div id="profile" style="margin-top: -14px;">
-           <div class="img">
-               <c:if test="${loggedInUser.photo ne null}">
-                   <img class="profileImg" src="${loggedInUser.photo}" onerror="this.style.display='none'"/>
-               </c:if>
-           </div>
-           <div class="info">
-               <h3 style="margin-top: 30px;">${loggedInUser.nickname}</h3>
-               
-             <div id="imgBox" style="margin-left: 143px;border-right-width: -44px;margin-top: 19px;">
-               <p style="margin-top: 42px;">프로필</p>
-               <img id="selectedImage" style="margin-top: -76px; border-radius: 10px; width: 100px; height: 100px;margin-left: 0px;"/>
-                  <form action="${pageContext.request.contextPath}/user/update" method="post" enctype="multipart/form-data">
-                        <input id="select" type="file" name="profilePhoto" size="11" multiple="multiple" style="margin-top: 10px;margin-left: 11px;"/>
-                        <input id="upload" type="submit" value="사진 업로드">
-                  </form>
-            </div>
-   
+    <div id="profile" class="profile">
+        <%-- <div class="img">
+            <c:if test="${loggedInUser.photo ne null}">
+                <img class="profileImg" src="${loggedInUser.photo}" onerror="this.style.display='none'"/>
+            </c:if>
+        </div> --%>
+        <div class="img">
+    	<c:choose>
+        	<c:when test="${loggedInUser.photo ne null}">
+            	<img class="profileImg" src="${loggedInUser.photo}" />
+        	</c:when>
+        	<c:otherwise>
+        	    <!-- 기본 이미지를 여기에 넣으세요. -->
+            	<img class="profileImg" src="나중에 넣기" />
+            	<!-- 또는 텍스트나 다른 대체 콘텐츠를 표시할 수 있습니다. -->
+            	<span>프로필 이미지가 없습니다.</span>
+        	</c:otherwise>
+    	</c:choose>
+</div>
+        
+        <div class="info">
+            <h1>Welcome, ${loggedInUser.nickname}!</h1>
 
-           </div>
-       </div>
-       
-       <hr style="height: 2px; margin-top: 95px; background-color: white" />
-   
-      <div id="scroll">
-          <div class="my-posts">
-              <h3 style="margin-left: -269px;margin-top: -52.28px;">게시글 목록</h3>
-              <table style="width: 100%">
-                  <tr>
-                      <td width="20"></td>
-                      <td>
-                          <br>
-                          <div id="commboxes">
-                              <c:forEach var="community" items="${userCommList}">
-                                  <div id="commbox" class="commbox" data-cmpostid="${community.cmPostId}" onclick="redirectToPost(${community.cmPostId})">
-                                     <div id="name">${community.userName}</div>
-                                           <!-- 프로필 이미지 -->
-                                           <div id="profile">
-                                               <c:if test="${community.userProfile.photo ne null}">
-                                                   <img class="profileImg" src="${community.userProfile.photo}" onerror="this.style.display='none'"/>
-                                               </c:if>
-                                           </div>
-                                     <div id="date">${community.commDate}</div>
-                                     <div id="detail">${community.content}</div>         
-                                  </div>
-                              </c:forEach>
-                          </div>
-                          <br>
-                      </td>
-                  </tr>
-              </table>
-          </div>
-       </div>
-       
-       <hr style="height: 2px; margin-top: 0px; background-color: white" />
-       <div id="scroll2">
-          <h3 style="margin-left: -289px;margin-top: -4.28px;">댓글 목록</h3>
-          <!-- 댓글 작성 -->
-       </div>
+         	<form action="<c:url value='/user/update'/>" method="post" enctype="multipart/form-data">
+     <%--      <form action="${pageContext.request.contextPath}/user/update" method="post" enctype="multipart/form-data"> --%>
+                <input type="file" name="profilePhoto" size="11" multiple="multiple" />
+                <input type="submit" value="사진 업로드">
+            </form>
+        </div>
     </div>
-    
-        <script>
-        // JavaScript function to update the selected image preview
-        document.querySelector('input[name="profilePhoto"]').addEventListener('change', function(event) {
-            const selectedImage = document.getElementById('selectedImage');
-            selectedImage.src = URL.createObjectURL(event.target.files[0]);
-        });
-        
-        // main페이지 이동
-        function redirectMainPage() {
-            window.location.href = "${pageContext.request.contextPath}/main/main";
-        }
-        
-        function goLogout() {
-            window.location.href = "${pageContext.request.contextPath}/";
-        }
-    </script>
+
+    <div class="my-posts">
+        <h1>게시글 목록</h1>
+        <table style="width: 100%">
+            <tr>
+                <td width="20"></td>
+                <td>
+                    <br>
+                    <div id="commboxes">
+                        <c:forEach var="community" items="${userCommList}">
+                            <div id="commbox" class="commbox" data-cmpostid="${community.cmPostId}" onclick="redirectToPost(${community.cmPostId})">
+                                <!-- 프로필 이미지 -->
+                                <div id="profile">
+                                   <%--  <c:if test="${community.userProfile.photo ne null}">
+                                        <img class="profileImg" src="${community.userProfile.photo}" onerror="this.style.display='none'"/>
+                                    </c:if> --%>
+                                    사진 저장 경로 : ${dir} <br/>
+									사진 파일 이름 : ${filename} <br/>
+                                    <img src="<c:url value='/uploads/${filename}'/>" />
+                                </div>
+                                <!-- 닉네임, 날짜, 내용 -->
+                                <div id="name">ㅇ${community.userName}</div>
+                                <div id="date">${community.commDate}</div>
+                                <div id="detail">${community.content}</div>                
+                            </div>
+                        </c:forEach>
+                    </div>
+                    <br>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="user-comments">
+    <h1>댓글 목록</h1>
+    <table style="width: 100%">
+        <tr>
+            <td width="20"></td>
+            <td>
+                <br>
+                <div id="commentBoxes">
+                    <c:choose>
+                        <c:when test="${empty userCommentList}">
+                            <p>댓글이 없습니다.</p>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="comment" items="${userCommentList}">
+                                <div id="commentBox" class="commentBox" data-cmcommentid="${comment.cmCommentId}">
+                                    <!-- 프로필 이미지 -->
+                                    <div id="profile">
+                                        <!-- 여기에 댓글의 프로필 이미지를 표시하는 코드를 추가하세요 -->
+                                        <!-- 예시: -->
+                                        <!-- <img class="profileImg" src="${comment.userProfile}" /> -->
+                                    </div>
+                                    <!-- 유저 이름, 날짜, 내용 -->
+                                    <div id="name">${comment.userName}</div>
+                                    <div id="date">${comment.date}</div>
+                                    <div id="content">${comment.content}</div>
+                                </div>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <br>
+            </td>
+        </tr>
+    </table>
+</div>
+
     
 </body>
 </html>

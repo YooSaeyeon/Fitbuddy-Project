@@ -78,7 +78,7 @@ public class UpdateUserController implements Controller {
             request.setAttribute("userId", userId);
         }
 
-        return "redirect:/profile";
+        return "redirect:/mypage/profile";
 
     }
 }

@@ -28,6 +28,11 @@ public class ProfileController implements Controller {
                 // 사용자가 작성한 글 목록 가져오기
                 List<Community> userCommList = myPageManager.getUserPosts(userId);
                 
+                // 로그 추가
+                System.out.println("Logged in user ID: " + loggedInUser.getUserId());
+                System.out.println("User profile: " + userProfile);
+                System.out.println("User community list size: " + userCommList.size());
+                
                 request.setAttribute("loggedInUser", loggedInUser);
                 request.setAttribute("userProfile", userProfile);
                 request.setAttribute("userCommList", userCommList);

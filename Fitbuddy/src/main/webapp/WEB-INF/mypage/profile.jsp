@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +21,8 @@
         <div class="info">
             <h1>Welcome, ${loggedInUser.nickname}!</h1>
 
-            <form action="mypage/profile" method="post" enctype="multipart/form-data">
+          <%--   <form action="<c:url value='/user/update'/>" method="post" enctype="multipart/form-data"> --%>
+          <form action="${pageContext.request.contextPath}/user/update" method="post" enctype="multipart/form-data">
                 <input type="file" name="profilePhoto" size="11" multiple="multiple" />
                 <input type="submit" value="사진 업로드">
             </form>
@@ -42,9 +46,9 @@
                                     </c:if>
                                 </div>
                                 <!-- 닉네임, 날짜, 내용 -->
-                                <div id="name" style="color:white">${community.userName}</div>
-                                <div id="date" style="color:white">${community.commDate}</div>
-                                <div id="detail" style="color:white">${community.content}</div>                
+                                <div id="name">${community.userName}</div>
+                                <div id="date">${community.commDate}</div>
+                                <div id="detail">${community.content}</div>                
                             </div>
                         </c:forEach>
                     </div>

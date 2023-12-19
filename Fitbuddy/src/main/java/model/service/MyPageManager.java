@@ -38,6 +38,5 @@ public class MyPageManager {
              return null;
          }
     }
-    
-    // 다른 필요한 메서드들을 추가로 구현해야 함
+ 
 }

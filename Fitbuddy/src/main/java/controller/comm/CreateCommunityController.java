@@ -8,46 +8,56 @@ import org.slf4j.LoggerFactory;
 import controller.Controller;
 import model.Community;
 import model.service.UserManager;
-
+import model.User;
 
 public class CreateCommunityController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(CreateCommunityController.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	 if (request.getMethod().equals("GET")) {
-
-             return "/comm/comm.jsp";
-         }
-        String content = request.getParameter("content");
-//        String img = request.getParameter("img");
-
-        // 세션에서 사용자 ID 가져오기
-        HttpSession session = request.getSession();
-        Object userIdObject = session.getAttribute("userId");
-
-        try {
-            int userId = (userIdObject != null) ? Integer.parseInt(userIdObject.toString()) : 17;
-            log.debug("User ID from session: {}", userId);
-
-            // UserManager를 통해 커뮤니티 생성
-            UserManager manager = UserManager.getInstance();
-            
-         // Community 객체를 생성할 때 빈 생성자 대신 생성자를 통해 필요한 값들을 초기화
-            Community comm = new Community(userId, content,  null, null);
-            manager.createCommunity(comm);
-
-            log.debug("Create Community : {}", comm);
-
-            // 성공 시 커뮤니티 리스트 화면으로 redirect
-            return "redirect:/community/commList";
-        } catch (Exception e) {
-            // 실패 시 입력 form으로 forwarding
-            request.setAttribute("creationFailed", true);
-            request.setAttribute("exception", e);
-
-            // Comm 객체를 생성하지 않도록 수정
-            return "community/create";
+        // "GET" 요청일 때 글 작성 페이지로 이동
+        if (request.getMethod().equals("GET")) {
+            return "/comm/comm.jsp";
         }
+
+        // 세션에서 현재 로그인한 사용자 정보 확인
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+            if (loggedInUser != null) {
+                // 요청에서 커뮤니티 내용 및 사용자 ID 가져오기
+                String content = request.getParameter("content");
+//                Object userIdObject = session.getAttribute("userId");
+
+                try {
+                    
+                    int userId = loggedInUser.getUserId();
+                    log.debug("세션에서 가져온 사용자 ID: {}", userId);
+
+                   
+                    UserManager manager = UserManager.getInstance();
+                    User user = manager.getUserById(userId);
+
+                    Community comm = new Community(userId, content, user.getPhoto(), user.getNickname());
+                    manager.createCommunity(comm);
+
+                    log.debug("커뮤니티 생성 완료: {}", comm);
+
+
+                    return "redirect:/community/commList";
+                } catch (Exception e) {
+  
+                    request.setAttribute("creationFailed", true);
+                    request.setAttribute("exception", e);
+
+            
+                    return "community/create";
+                }
+            }
+        }
+
+
+        return "redirect:/user/login"; 
     }
 }

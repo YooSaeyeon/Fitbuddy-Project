@@ -40,21 +40,21 @@
         <div class="commentContainer">
             <div class="commentProfileImage">
                 <c:choose>
-				    <c:when test="${empty comment.userProfile}">
-				        <img src="<c:url value='/images/commentProfile.png' />">
-				    </c:when>
-				    <c:otherwise>
-				        <img src="<c:url value='${comment.userProfile}' />">
-				    </c:otherwise>
-				</c:choose>
+                    <c:when test="${empty comment.userProfile}">
+                        <img src="<c:url value='/images/commentProfile.png' />">
+                    </c:when>
+                    <c:otherwise>
+                        <img src="<c:url value='${comment.userProfile}' />">
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="profileInfo">
-                <div class="comName">${comment.cmUserId}</div>
+                <div class="comName">${empty comment.userName ? '익명' : comment.userName}</div>
                 <div class="comContent">${comment.content}</div>
             </div>
         </div>
     </c:forEach>
-	</div>
+</div>
 
    <div id="commentForm1">
     <form action="<c:url value='/community/comment' />" method="post">

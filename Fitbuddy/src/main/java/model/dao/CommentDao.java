@@ -15,8 +15,8 @@ public class CommentDao {
 	}
 	/*댓글 생성*/
 	public Comment create(Comment comment) throws SQLException {
-	    String sql = "INSERT INTO COMMCOMMENT (CMPOSTID, USERID, CONTENT, USERPROFILE) VALUES (?, ?, ?, ?)";
-	    Object[] param = new Object[] { comment.getCmPostId(), comment.getCmUserId(), comment.getContent(), comment.getUserProfile() };
+		String sql = "INSERT INTO COMMCOMMENT (CMPOSTID, USERID,USERNAME, CONTENT, USERPROFILE) VALUES (?,?, ?, ?, ?)";
+		Object[] param = new Object[] { comment.getCmPostId(), comment.getCmUserId(), comment.getUserName(), comment.getContent(), comment.getUserProfile() };
 
 	    jdbcUtil.setSqlAndParameters(sql, param);
 
@@ -43,7 +43,7 @@ public class CommentDao {
 	/*특정 게시글 댓글 목록 조회 부분*/
 	public List<Comment> findCommentList(int cmPostId) throws SQLException {
 	    JDBCUtil jdbcUtil = new JDBCUtil();
-	    String sql = "SELECT CMCOMMENTID, CMPOSTID, USERID, CONTENT, USERPROFILE FROM COMMCOMMENT " +
+	    String sql = "SELECT CMCOMMENTID, CMPOSTID, USERID, CONTENT, USERNAME,USERPROFILE FROM COMMCOMMENT " +
 	                 "WHERE CMPOSTID = ? " +
 	                 "ORDER BY CMCOMMENTID";
 	    jdbcUtil.setSqlAndParameters(sql, new Object[]{cmPostId});
@@ -57,6 +57,7 @@ public class CommentDao {
 	                    rs.getInt("CMPOSTID"),
 	                    rs.getInt("USERID"),
 	                    rs.getString("CONTENT"),
+	                    rs.getString("USERNAME"),
 	                    rs.getString("USERPROFILE"));
 	            commentList.add(comment);
 	          

@@ -1,6 +1,8 @@
 package model.service;
 
 import java.util.List;
+
+import model.Comment;
 import model.Community;
 import model.User;
 import model.dao.MypageDAO;
@@ -37,6 +39,15 @@ public class MyPageManager {
              e.printStackTrace();
              return null;
          }
+    }
+    
+    public List<Comment> getUserComments(int userId) {
+        try {
+            return mypageDAO.getUserComments(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
  
 }

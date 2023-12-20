@@ -70,7 +70,7 @@ public class MypageDAO {
     public List<Comment> getUserComments(int userId) {
         List<Comment> userCommentList = new ArrayList<>();
         
-        String query = "SELECT CMCOMMENTID, CMPOSTID, USERID, CONTENT, USERPROFILE,USERNAME FROM COMMENT " +
+        String query = "SELECT CMCOMMENTID, CMPOSTID, USERID, CONTENT, USERPROFILE, USERNAME FROM COMMCOMMENT " +
                 "WHERE USERID = ? ORDER BY CMCOMMENTID";
 
         Object[] parameters = { userId };
@@ -86,11 +86,10 @@ public class MypageDAO {
                         rs.getString("CONTENT"),
                         rs.getString("USERPROFILE"),
                         rs.getString("USERNAME"));
-                System.out.println("추가되고 있나?");
+
+                System.out.println("Retrieved comment: " + comment); // 이 부분에 로그 추가
+
                 userCommentList.add(comment);
-             
-             // 로그 추가
-                System.out.println("Retrieved comment: " + comment);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,5 +97,6 @@ public class MypageDAO {
 
         return userCommentList;
     }
+
 
 }

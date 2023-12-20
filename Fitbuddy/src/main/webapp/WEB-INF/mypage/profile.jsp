@@ -72,28 +72,28 @@
             </tr>
         </table>
     </div>
-    <div class="user-comments">
+<div class="user-comments">
     <h1>댓글 목록</h1>
     <table style="width: 100%">
         <tr>
             <td width="20"></td>
             <td>
                 <br>
-                <div id="commentBoxes">
+                <div id="commentBoxes">              
                     <c:choose>
                         <c:when test="${empty userCommentList}">
                             <p>댓글이 없습니다.</p>
                         </c:when>
                         <c:otherwise>
                             <c:forEach var="comment" items="${userCommentList}">
-                                <div id="commentBox" class="commentBox" data-cmcommentid="${comment.cmCommentId}">
+                                <div class="commentBox" data-cmcommentid="${comment.cmCommentId}">
                                     <!-- 프로필 이미지 -->
-                                    <div id="profile">
+                                    <div class="profile">
                                         <img class="profileImg" src="${comment.userProfile}" />
                                     </div>
-                                    <!-- 유저 이름,내용 -->
-                                    <div id="name">${comment.userName}</div>     
-                                    <div id="content">${comment.content}</div>
+                                    <!-- 유저 이름, 내용 -->
+                                    <div class="name">${comment.userName}</div>     
+                                    <div class="content">${comment.content}</div>
                                 </div>
                             </c:forEach>
                         </c:otherwise>

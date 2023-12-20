@@ -70,7 +70,6 @@ public class MypageDAO {
     public List<Comment> getUserComments(int userId) {
         List<Comment> userCommentList = new ArrayList<>();
         
-        System.out.println("추가되고 있나요?");
         String query = "SELECT CMCOMMENTID, CMPOSTID, USERID, CONTENT, USERPROFILE,USERNAME FROM COMMENT " +
                 "WHERE USERID = ? ORDER BY CMCOMMENTID";
 
@@ -87,7 +86,7 @@ public class MypageDAO {
                         rs.getString("CONTENT"),
                         rs.getString("USERPROFILE"),
                         rs.getString("USERNAME"));
-                System.out.println("추가되고 있나요?");
+                System.out.println("추가되고 있나?");
                 userCommentList.add(comment);
              
              // 로그 추가

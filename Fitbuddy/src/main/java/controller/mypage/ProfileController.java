@@ -27,7 +27,7 @@ public class ProfileController implements Controller {
                 int userId = loggedInUser.getUserId();
                 User userProfile = myPageManager.getUserById(userId);
 
-                // 사용자가 작성한 글 목록 가져오기
+                // 사용자가 작성한 글/댓글 목록 가져오기
                 List<Community> userCommList = myPageManager.getUserPosts(userId);
                 List<Comment> userCommentList = myPageManager.getUserComments(userId);
                 

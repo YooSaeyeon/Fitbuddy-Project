@@ -153,12 +153,12 @@
          
          // mypage 페이지 이동 
         function redirectToMypagePage() {
-            window.location.href = "${pageContext.request.contextPath}/comm/comm";
+            window.location.href = "${pageContext.request.contextPath}/mypage/profile";
         }
          
          // login 페이지 이동 
         function redirectToLoginPage() {
-            window.location.href = "${pageContext.request.contextPath}/comm/comm";
+            window.location.href = "${pageContext.request.contextPath}/user/login";
         }
     </script>
 </body>

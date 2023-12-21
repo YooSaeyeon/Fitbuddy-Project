@@ -45,6 +45,7 @@ public class ProfileController implements Controller {
                 request.setAttribute("loggedInUser", loggedInUser);
                 request.setAttribute("userProfile", userProfile);
                 request.setAttribute("userCommList", userCommList);
+                request.setAttribute("userCommentList", userCommentList);
                 
                 return "/mypage/profile.jsp"; // 사용자 프로필과 글 목록을 표시하는 JSP 페이지
             }

@@ -7,104 +7,184 @@
 <head>
     <meta charset="UTF-8">
     <title>사용자 프로필</title>
- 
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            color: white;
+            background-color: #1f1f1f;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .profile {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #333;
+            border: 1px solid #000;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile .img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .profile .img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile .info {
+            text-align: center;
+        }
+        
+        .my-posts, .user-comments {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+        
+        .my-posts .commbox, .user-comments .commentBox {
+            border: 1px solid #000;
+            background-color: #222;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .my-posts .commbox .profile, .user-comments .commentBox .profile {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+        
+        .my-posts .commbox .profile img, .user-comments .commentBox .profile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Scrollbar style */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #333;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+    </style>
 </head>
 <body>
-    <div id="profile" class="profile">
-        <%-- <div class="img">
-            <c:if test="${loggedInUser.photo ne null}">
-                <img class="profileImg" src="${loggedInUser.photo}" onerror="this.style.display='none'"/>
-            </c:if>
-        </div> --%>
-        <div class="img">
-    	<c:choose>
-    		<c:when test="${not empty userProfile.photo}">
-        	<% System.out.println("로그인된 사용자의 사진이 있습니다."); %>
-        	<img src="<c:url value='/uploads/${userProfile.photo}'/>" />
-        	${userProfile.photo}
-    	</c:when>
-    	<c:otherwise>
-        	<!-- 기본 이미지 -->
-        	<img class="profileImg" src="나중에 넣을 것" />
-        	<span>프로필 이미지가 없습니다.</span>
-    	</c:otherwise>
-</c:choose>
-
-</div>
-        
-        <div class="info">
-            <h1>Welcome, ${loggedInUser.nickname}!</h1>
-
-         	<form action="<c:url value='/user/update'/>" method="post" enctype="multipart/form-data">
-     <%--      <form action="${pageContext.request.contextPath}/user/update" method="post" enctype="multipart/form-data"> --%>
-                <input type="file" name="profilePhoto" size="11" multiple="multiple" />
-                <input type="submit" value="사진 업로드">
-            </form>
+    <div class="container">
+        <div class="profile">
+            <div class="img">
+                <c:choose>
+                    <c:when test="${not empty userProfile.photo}">
+                        <img src="<c:url value='/uploads/${userProfile.photo}'/>" />
+                    </c:when>
+                    <c:otherwise>
+                        <img class="profileImg" src="나중에 넣을 것" />
+                        <span>프로필 이미지가 없습니다.</span>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            
+            <div class="info">
+                <h1>${loggedInUser.nickname}</h1>
+                <form action="<c:url value='/user/update'/>" method="post" enctype="multipart/form-data">
+                    <input type="file" name="profilePhoto" size="11" multiple="multiple" />
+                    <input type="submit" value="사진 업로드">
+                </form>
+            </div>
         </div>
-    </div>
 
-    <div class="my-posts">
-        <h1>게시글 목록</h1>
-        <table style="width: 100%">
-            <tr>
-                <td width="20"></td>
-                <td>
-                    <br>
-                    <div id="commboxes">
-                        <c:forEach var="community" items="${userCommList}">
-                            <div id="commbox" class="commbox" data-cmpostid="${community.cmPostId}" onclick="redirectToPost(${community.cmPostId})">
-                                <!-- 프로필 이미지 -->
-                                <div id="profile">
-                                   <%--  <c:if test="${community.userProfile.photo ne null}">
-                                        <img class="profileImg" src="${community.userProfile.photo}" onerror="this.style.display='none'"/>
-                                    </c:if> --%>
-                                    <img src="<c:url value='/uploads/${filename}'/>" />
+        <div class="my-posts">
+            <h1>게시글 목록</h1>
+            <div id="scroll">
+                <c:forEach var="community" items="${userCommList}">
+                    <div class="commbox" data-cmpostid="${community.cmPostId}" onclick="redirectToPost(${community.cmPostId})">
+                        <div class="profile">
+                            <c:choose>
+                              <%--   <c:when test="${not empty community.userProfile.photo}">
+                                    <img src="<c:url value='/uploads/${community.userProfile.photo}'/>" />
+                                </c:when> --%>
+                                 <c:when test="${not empty userProfile.photo}">
+                        		<img src="<c:url value='/uploads/${userProfile.photo}'/>" />
+                    			</c:when>
+                                <c:otherwise>
+                                    <img class="profileImg" src="나중에 넣을 것" />
+                                    <span>프로필 이미지가 없습니다.</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="name">${community.userName}</div>
+                        <div class="date">${community.commDate}</div>
+                        <div class="detail">${community.content}</div>                
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+        
+        <div class="user-comments">
+            <h1>댓글 목록</h1>
+            <div id="scroll2">
+                <c:choose>
+                    <c:when test="${empty userCommentList}">
+                        <p>댓글이 없습니다.</p>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="comment" items="${userCommentList}">
+                            <div class="commentBox" data-cmcommentid="${comment.cmCommentId}">
+                                <div class="profile">
+                                    <c:choose>
+                                        <%-- <c:when test="${not empty comment.userProfile}">
+                                            <img src="<c:url value='/uploads/${comment.userProfile}'/>" />
+                                        </c:when> --%>
+                                         <c:when test="${not empty userProfile.photo}">
+                        				<img src="<c:url value='/uploads/${userProfile.photo}'/>" />
+                    					</c:when>
+                                        <c:otherwise>
+                                            <img class="profileImg" src="나중에 넣을 것" />
+                                            <span>프로필 이미지가 없습니다.</span>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
-                                <!-- 닉네임, 날짜, 내용 -->
-                                <div id="name">${community.userName}</div>
-                                <div id="date">${community.commDate}</div>
-                                <div id="detail">${community.content}</div>                
+                                <div class="name">${comment.userName}</div>
+                                <div class="content">${comment.content}</div>
                             </div>
                         </c:forEach>
-                    </div>
-                    <br>
-                </td>
-            </tr>
-        </table>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
     </div>
-<div class="user-comments">
-    <h1>댓글 목록</h1>
-    <table style="width: 100%">
-        <tr>
-            <td width="20"></td>
-            <td>
-                <br>
-                <div id="commentBoxes">              
-                    <c:choose>
-                        <c:when test="${empty userCommentList}">
-                            <p>댓글이 없습니다.</p>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="comment" items="${userCommentList}">
-                                <div class="commentBox" data-cmcommentid="${comment.cmCommentId}">
-                                    <!-- 프로필 이미지 -->
-                                    <div class="profile">
-                                        <img class="profileImg" src="${comment.userProfile}" />
-                                    </div>
-                                    <!-- 유저 이름, 내용 -->
-                                    <div class="name">${comment.userName}</div>     
-                                    <div class="content">${comment.content}</div>
-                                </div>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <br>
-            </td>
-        </tr>
-    </table>
-</div>
-
-    
 </body>
 </html>

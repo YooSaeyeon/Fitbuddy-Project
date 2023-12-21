@@ -21,6 +21,15 @@ public class TodoCommentDTO {
         this.todopostId = todopostId;
     }
 	
+	public TodoCommentDTO(int todopostId, String content, int userId, int todoCheck) {
+        this.userId = userId;
+        this.content = content;
+        this.todoCheck = todoCheck;
+        this.todopostId = todopostId;
+    }
+	
+	
+	
 	public int getTodopostId() { return todopostId; }
 	public void setTodopostId(int todopostId) { this.todopostId = todopostId; }
 	

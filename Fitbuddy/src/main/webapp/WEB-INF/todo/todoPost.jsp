@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,46 +168,50 @@
 	<div id="container">
 		<div>
 			<img class="logo"
-				src="${pageContext.request.contextPath}/images/image1.png" onclick="redirectMainPage()" alt="로고">
+				src="${pageContext.request.contextPath}/images/image1.png"
+				onclick="redirectMainPage()" alt="로고">
 		</div>
 		<div id="logout">로그아웃</div>
-		<div id="writing">2023년 12월 17일 일요일</div>
+		<div id="writing" pattern="yyyy년 MM월 dd일">${todo.createdAt}</div>
 		<div id="todo">TO DO</div>
 
-		<form action="/fitbuddy/todo/todopost" method="post">
+
+		<form action="/Fitbuddy/todo/todolist/comm" method="post">
+			<input type="hidden" name="userId" value="${loggedInUser.userId}" />
+			<input type="hidden" name="todopostId" value="${todopostId}" /> <input
+				type="hidden" name="createdAt" value="${created_at}" />
+
 			<div id="todoList">
 				<div id="todofirst" onclick="changeColor(this)"></div>
 				<div id="todocheck">✓</div>
 				<input type="text" name="content" id="todotext">
 				<button type="submit" id="todoboxplus">+</button>
-
-				<!-- 댓글을 반복하여 표시 -->
-				<c:forEach var="comment" items="${todoList}">
-					<div>${comment.content}</div>
-					<!-- 다른 댓글 정보가 필요한 경우 표시 -->
-				</c:forEach>
 			</div>
-	</div>
 
-	<div id="save">저장</div>
-	</form>
+		</form>
+
+		<!-- 댓글을 반복하여 표시 -->
+		<c:forEach var="comment" items="${commentList}">
+			<div>${comment.content}</div>
+			<!-- 다른 댓글 정보가 필요한 경우 표시 -->
+		</c:forEach>
 
 
-	<script>
-		var currentColor = "#D3D3D3"; // 초기 색상
-		function changeColor(element) {
-			if (currentColor === "#D3D3D3") {
-				currentColor = "#C2AC18"; // 색상 변경
-			} else {
-				currentColor = "#D3D3D3"; // 원래 색상으로 변경
+		<script>
+			var currentColor = "#D3D3D3"; // 초기 색상
+			function changeColor(element) {
+				if (currentColor === "#D3D3D3") {
+					currentColor = "#C2AC18"; // 색상 변경
+				} else {
+					currentColor = "#D3D3D3"; // 원래 색상으로 변경
+				}
+				element.style.background = currentColor;
 			}
-			element.style.background = currentColor;
-		}
-		
-		// main페이지 이동
-        function redirectMainPage() {
-            window.location.href = "${pageContext.request.contextPath}/";
-        }
-	</script>
+
+			// main페이지 이동
+			function redirectMainPage() {
+				window.location.href = "${pageContext.request.contextPath}/";
+			}
+		</script>
 </body>
 </html>

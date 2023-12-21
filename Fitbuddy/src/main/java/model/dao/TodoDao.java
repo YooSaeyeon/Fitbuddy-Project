@@ -23,7 +23,7 @@ public class TodoDao {
 		java.util.Date currentDate = new java.util.Date();
 	    java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
 		
-	 // 1. Check if exists 로그 추가
+	/* // 1. Check if exists 로그 추가
 	    String checkIfExistsSql = "SELECT COUNT(*) FROM TODO WHERE userId = ? AND created_at = TO_DATE(?, 'YYYY-MM-DD')";
         Object[] checkIfExistsParam = new Object[]{todo.getUserId(), sqlDate};
         jdbcUtil.setSqlAndParameters(checkIfExistsSql, checkIfExistsParam);
@@ -44,7 +44,7 @@ public class TodoDao {
 	        jdbcUtil.rollback();
 	        log.error("Error checking if record exists", ex);
 	        ex.printStackTrace();
-	    }
+	    }*/
 
 	    // 레코드가 존재하지 않으면, 삽입을 진행하는 SQL 쿼리
 	    String insertSql = "INSERT INTO TODO (userId, created_at, todopostId) VALUES (?, ?, ?)";
@@ -60,13 +60,8 @@ public class TodoDao {
 	        int affectedRows = jdbcUtil.executeUpdate();
 	        log.debug("Affected Rows: {}", affectedRows);
 	        if (affectedRows > 0) {
-	            // 생성된 키를 가져오기
-	            ResultSet rs = jdbcUtil.getGeneratedKeys();
-	            if (rs != null && rs.next()) {
-	                int generatedKey = rs.getInt(1);
-	                todo.setTodopostId(generatedKey);
-	                return todo;  // TodoDTO 반환
-	            }
+
+	        	return todo;
 	        }
 	    } catch (Exception ex) {
 	        jdbcUtil.rollback();
@@ -97,27 +92,56 @@ public class TodoDao {
     }
 
 	/* TODO 글 목록 조회 부분*/
-	public List<TodoDTO> findTodoListByUserId(int userId) throws SQLException {
+	public List<TodoDTO> findTodoList(int userId) {
+		List<TodoDTO> todoList = new ArrayList<>();
 	    String sql = "SELECT USERID, CREATED_AT, TODOPOSTID FROM TODO " +
 	                 "WHERE USERID = ? " +
 	                 "ORDER BY CREATED_AT";
-	    jdbcUtil.setSqlAndParameters(sql, new Object[]{userId});
+	    
+	    Object[] parameters = { userId };
+	    
+	    jdbcUtil.setSqlAndParameters(sql, parameters);
+	    
+	    
+	    try (ResultSet rs = jdbcUtil.executeQuery()) {
+	    	while (rs.next()) {
+	    		TodoDTO todo = new TodoDTO (
+	    				rs.getInt("USERID"),
+	    				rs.getDate("CREATED_AT"),
+	    				rs.getInt("TODOPOSTID")
+	    				);
+	    		todoList.add(todo);
+	    		//System.out.println("User todo list size: " + todoList.size());
+	    				
+	    	}
+	    } catch (SQLException e) {
+	    	e.printStackTrace();
+	    }
+	    
+	    return todoList;
+
+	}
+	
+	
+	/* TODO 글 목록 조회 부분*/
+	public TodoDTO findPostById(int todopostId) throws SQLException {
+	    String sql = "SELECT USERID, CREATED_AT, TODOPOSTID FROM TODO " +
+	                 "WHERE TODOPOSTID = ? ";
+	    jdbcUtil.setSqlAndParameters(sql, new Object[]{todopostId});
 
 	    try {
 	        ResultSet rs = jdbcUtil.executeQuery();
-	        List<TodoDTO> todoList = new ArrayList<>();
 
-	        while (rs.next()) {
+	        if (rs.next()) {
 	            TodoDTO todo = new TodoDTO(
 	                    rs.getInt("USERID"),
 	                    rs.getDate("CREATED_AT"),
 	                    rs.getInt("TODOPOSTID")
 	            );
-	            todoList.add(todo);
-	        }
-
-	        return todoList;
-
+	            log.debug("Found TodoDTO: {}", todo);
+	            return todo;
+	        } 
+	        
 	    } catch (Exception ex) {
 	        ex.printStackTrace();
 	    } finally {

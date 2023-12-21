@@ -23,7 +23,8 @@ public class TodoCommentDao {
 
 	    // 레코드가 존재하지 않으면, 삽입을 진행하는 SQL 쿼리
 	    String insertSql = "INSERT INTO TODOCOMMENT (todopostId, content, todoCommentId, userId, todoCheck) VALUES (?, ?, ?, ?, ?)";
-	    Object[] insertParam = new Object[]{todo.getTodopostId(), todo.getContent(), todo.getTodoCommentId(), todo.getUserId(), todo.getTodoCheck()};
+	    int nextCommentId = getNextCommentId();
+	    Object[] insertParam = new Object[]{todo.getTodopostId(), todo.getContent(), nextCommentId, todo.getUserId(), todo.getTodoCheck()};
 
 	    log.debug("Insert SQL: {}", insertSql);
         
@@ -31,16 +32,11 @@ public class TodoCommentDao {
 
 	    try {
 	    	int affectedRows = jdbcUtil.executeUpdate();
-	        log.debug("Affected Rows: {}", affectedRows);
+	    	log.debug("Affected Rows: {}", affectedRows);
 	        if (affectedRows > 0) {
-	            // 생성된 키를 가져오기
-	            ResultSet rs = jdbcUtil.getGeneratedKeys();
-	            if (rs != null && rs.next()) {
-	                int generatedKey = rs.getInt(1);
-	                todo.setTodoCommentId(generatedKey);
-	                return todo;  // TodoDTO 반환
-	            }
+	           return todo;
 	        }
+	        
 	    } catch (Exception ex) {
 	    	jdbcUtil.rollback();
 	        log.error("Error during todo creation", ex);
@@ -68,6 +64,45 @@ public class TodoCommentDao {
 
         return 0; // 실패한 경우에는 0을 반환하거나 예외 처리를 수행
     }
+
+	/* TODO 글 목록 조회 부분*/
+	public List<TodoCommentDTO> findTodoCommList(int todopostId) throws SQLException{
+		JDBCUtil jdbcUtil = new JDBCUtil();
+	    String sql = "SELECT TODOPOSTID, CONTENT, TODOCOMMENTID, USERID, TODOCHECK FROM TODOCOMMENT " +
+	                 "WHERE TODOPOSTID = ? " +
+	                 "ORDER BY TODOCOMMENTID";
+	    
+	    //Object[] parameters = { todopostId };
+	    //jdbcUtil.setSqlAndParameters(sql, parameters);
+	    
+	    jdbcUtil.setSqlAndParameters(sql,  new Object[]{todopostId});
+	    
+	    
+	    try {
+	    	ResultSet rs = jdbcUtil.executeQuery();
+	    	List<TodoCommentDTO> commentList = new ArrayList<>();
+	    	
+	    	while (rs.next()) {
+	    		TodoCommentDTO comment = new TodoCommentDTO(
+	    				rs.getInt("TODOPOSTID"),
+	    				rs.getString("CONTENT"),
+	    				rs.getInt("TODOCOMMENTID"),
+	    				rs.getInt("USERID"),
+	    				rs.getInt("TODOCHECK")
+	    				);
+	    		commentList.add(comment);
+	    	}
+	    	return commentList;
+	    } catch (Exception ex) {
+	    	ex.printStackTrace();
+	    } finally {
+	    	jdbcUtil.close();
+	    }
+	    
+	    return null;
+
+	}
+	
 
 
 

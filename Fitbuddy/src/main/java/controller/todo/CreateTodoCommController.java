@@ -20,78 +20,61 @@ import controller.todo.CreateTodoController;
 import controller.user.UserSessionUtils;
 import model.dao.TodoCommentDao;
 import model.dto.TodoCommentDTO;
+import model.User;
 import model.service.UserManager;
 
 public class CreateTodoCommController implements Controller {
-	private static final Logger log = LoggerFactory.getLogger(CreateTodoController.class);
+	private static final Logger log = LoggerFactory.getLogger(CreateTodoCommController.class);
 	
 	
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)	throws Exception {
     	log.debug("CreateTodoController executed.");
-    	HttpSession session = request.getSession();
-        Object userIdObject = session.getAttribute("userId");
-        Object postIdObject = session.getAttribute("todopostId");
-        Object commentIdObject = session.getAttribute("todoCommentId");
+    	HttpSession session = request.getSession(false);   
         
-        try {
+        if (session != null) {
+        	User loggedInUser = (User) session.getAttribute("loggedInUser");
         	
-            
-            // 세션에서 사용자 ID 가져오기
-        	int userId = (userIdObject != null) ? Integer.parseInt(userIdObject.toString()) : 23;
-            int postId = (postIdObject != null) ? Integer.parseInt(postIdObject.toString()) : 6;
-            int commentId = (commentIdObject != null) ? Integer.parseInt(commentIdObject.toString()) : 1;
-            log.debug("User ID from session: {}", userId);
-            log.debug("Post ID from session: {}", postId);
-            log.debug("comment Id from session: {}", commentId);
-            
-
-            // UserManager를 통해 커뮤니티 생성
-            TodoCommentDao todoCommentDao = new TodoCommentDao();
-            
-         // 데이터베이스에서 다음 postId 값을 가져오는 메서드 호출
-            int nextCommentId = todoCommentDao.getNextCommentId();
-            
-            String content = request.getParameter("content");
-            
-         // TodoCommentDTO 생성
-            TodoCommentDTO todoComment = new TodoCommentDTO(postId, content, nextCommentId, userId, 0);
-
-            // 댓글 생성
-            TodoCommentDTO createdComment = todoCommentDao.create(todoComment);
-
-            // 생성된 댓글을 세션에 저장
-            if (createdComment != null) {
-                // 댓글 리스트를 세션에서 가져오기
-                @SuppressWarnings("unchecked")
-                java.util.List<TodoCommentDTO> todoList = (java.util.List<TodoCommentDTO>) session.getAttribute("todoList");
-
-                if (todoList == null) {
-                    todoList = new java.util.ArrayList<>();
-                }
-
-                // 생성된 댓글 추가
-                todoList.add(createdComment);
-
-                // 세션에 댓글 리스트 저장
-                session.setAttribute("todoList", todoList);
-                log.debug("Create Comment: {}", createdComment);
-
-                // 성공 시 todopost.jsp로 리다이렉트
-                return "redirect:/todoPost.jsp";
-            } else {
-                // 실패 시 입력 폼으로 포워딩
-                request.setAttribute("creationFailed", true);
-                log.debug("Comment creation failed");
-                return "/todo/todoPost.jsp";
+        	if (loggedInUser != null) {
+        		try {
+        			
+        			int postId = Integer.parseInt(request.getParameter("todopostId"));
+        			int userId = loggedInUser.getUserId();
+        			
+        			log.debug("세션에서 가져온 사용자 ID: {}", userId);
+        			
+        			UserManager manager = UserManager.getInstance();
+        			//User user = manager.getUserById(userId);
+        			
+        			TodoCommentDTO todocomm = new TodoCommentDTO();
+        			todocomm.setTodopostId(postId);
+        			todocomm.setContent(request.getParameter("content"));
+        			todocomm.setUserId(userId);
+        			todocomm.setTodoCheck(0);
+        			
+        			TodoCommentDao todocommentDao = new TodoCommentDao();
+        			TodoCommentDTO createdComment = todocommentDao.create(todocomm);
+        			System.out.println("생성 코멘트{}" + createdComment);
+        			
+        			return "redirect:/todo/todolist/comm?userId=" + userId + "&postId=" + postId;
+        			
+        		} catch (Exception e) {
+        			e.printStackTrace();
+        			return "redirect:/todo/todolist?userId=" + loggedInUser.getUserId();
+        		}
+        		
+        		
+        		
+        	} else {
+                // 로그인된 사용자 정보가 없을 때의 처리
+                System.out.println("Logged-in user information not found.");
+                return "redirect:/user/loginform"; // 예시로 로그인 페이지로 리다이렉트
             }
-        } catch (Exception e) {
-        	// 실패 시 입력 폼으로 포워딩
-            request.setAttribute("creationFailed", true);
-            request.setAttribute("exception", e);
-            log.error("Error during comment creation", e);
-            e.printStackTrace();
-            return "/todo/todoPost.jsp";
+        } else {
+            // 세션이 없을 때의 처리
+            System.out.println("Session not found.");
+            return "redirect:/user/loginform"; // 예시로 로그인 페이지로 리다이렉트
         }
+        
     }
 }

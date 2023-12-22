@@ -109,6 +109,23 @@ public class UserManager {
 	    return todoCommentDAO.create(todo);    
 	}
 
+	public User getUserById(int userId) {
+		 try {
+          User user = todoCommentDAO.getUserById(userId);
+
+          if (user != null) {
+              System.out.println("User ID in COMM: " + user.getUserId());
+          } else {
+              System.out.println("User is null in comm");
+          }
+
+          return user;
+      } catch (Exception e) {
+          e.printStackTrace();
+          return null;
+      }
+	}
+	
 	
 	public List<Community> findCommunityPostList() throws SQLException {
 		return commDAO.findCommunityPostList();

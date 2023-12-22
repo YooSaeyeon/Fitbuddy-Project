@@ -172,14 +172,15 @@
 				onclick="redirectMainPage()" alt="로고">
 		</div>
 		<div id="logout">로그아웃</div>
-		<div id="writing" pattern="yyyy년 MM월 dd일">${todo.createdAt}</div>
+		<!-- createdAt 불러오는 거 수정해야됨 -->
+		<div id="writing" pattern="yyyy년 MM월 dd일" value="${todo.createdAt}">${todo.createdAt}</div>
 		<div id="todo">TO DO</div>
 
 
-		<form action="/Fitbuddy/todo/todolist/comm" method="post">
+		<form action="<c:url value='/todo/todolist/comm/comm' />" method="post">
 			<input type="hidden" name="userId" value="${loggedInUser.userId}" />
-			<input type="hidden" name="todopostId" value="${todopostId}" /> <input
-				type="hidden" name="createdAt" value="${created_at}" />
+			<input type="hidden" name="todopostId" value="${todo.todopostId}" /> <input
+				type="hidden" name="createdAt" value="${todo.created_at}" />
 
 			<div id="todoList">
 				<div id="todofirst" onclick="changeColor(this)"></div>

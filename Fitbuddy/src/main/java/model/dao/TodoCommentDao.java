@@ -7,6 +7,7 @@ import java.util.List;
 import java.sql.Timestamp;
 
 import model.dto.TodoCommentDTO;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,7 +104,29 @@ public class TodoCommentDao {
 
 	}
 	
+	public User getUserById(int userId) {
+        User user = null;
+        String query = "SELECT * FROM buddyUser WHERE userId = ?";
 
+        Object[] parameters = { userId };
+
+        jdbcUtil.setSqlAndParameters(query, parameters);
+
+        try (ResultSet resultSet = jdbcUtil.executeQuery()) {
+            if (resultSet.next()) {
+                user = new User();
+                user.setUserId(resultSet.getInt("userId"));
+                user.setNickname(resultSet.getString("nickname"));
+                user.setPhoto(resultSet.getString("photo"));
+              
+        
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
 
 
 	public void updateTodoPost(TodoCommentDTO todoPost) {

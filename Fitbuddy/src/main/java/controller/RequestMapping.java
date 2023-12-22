@@ -60,6 +60,7 @@ public class RequestMapping {
         mappings.put("/todo", new CreateTodoController());
         mappings.put("/todo/todolist", new ListTodoController());
         mappings.put("/todo/todolist/comm", new ViewTodoController());
+        mappings.put("/todo/todolist/comm/comm", new CreateTodoCommController());
         
 
         

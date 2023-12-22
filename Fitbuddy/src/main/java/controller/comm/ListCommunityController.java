@@ -11,17 +11,13 @@ import model.service.UserManager;
 
 public class ListCommunityController implements Controller {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // 세션에서 사용자 ID 가져오기
-        HttpSession session = request.getSession();
-        Object userId = session.getAttribute("userId");
+    public String execute(HttpServletRequest request, HttpServletResponse response)	throws Exception {
+    	// 커뮤니티 게시글 목록
+    	UserManager manager = UserManager.getInstance();
+		List<Community> commList = manager.findCommunityPostList();
+		
+		request.setAttribute("commList", commList);				
+		return "/comm/commList.jsp";       
 
-        // UserManager를 통해 커뮤니티 리스트 가져오기
-        UserManager manager = UserManager.getInstance();
-        List<Community> commList = manager.findCommunityPostList();
-
-        // commList 객체를 request에 저장하여 커뮤니티 리스트 화면으로 이동(forwarding)
-        request.setAttribute("commList", commList);
-        return "/comm/comm.jsp";
     }
 }

@@ -33,7 +33,7 @@ public class RequestMapping {
         // 사용자 정보 수정 폼 요청과 수정 요청 처리 병합
 //      mappings.put("/user/update/form", new UpdateUserFormController());
 //      mappings.put("/user/update", new UpdateUserController());        
-//        mappings.put("/user/update", new UpdateUserController());
+        mappings.put("/user/update", new UpdateUserController());
 //        
 //        mappings.put("/user/delete", new DeleteUserController());
         
@@ -45,16 +45,11 @@ public class RequestMapping {
         	mappings.put("/community/create", new CreateCommunityController());
 //        mappings.put("/community/update", new UpdateCommunityController());
         
-//        mappings.put("/mypage/mypage", new ListProfileController());
-////        mappings.put("/mypage/profile", new ListProfileController());
-////        mappings.put("/mypage/myMatching", new ListMatchingController());
-////        mappings.put("/mypage/myPost", new ListPostController());
-////        mappings.put("/mypage/myComment", new ListCommentController());
-        
+
         mappings.put("/mypage/profile", new ProfileController());
-        mappings.put("/mypage/myMatching", new MyMatchingController());
-        mappings.put("/mypage/myPost", new MyPostController());
-        mappings.put("/mypage/myComment", new MyCommentController());
+//        mappings.put("/mypage/myMatching", new MyMatchingController());
+//        mappings.put("/mypage/myPost", new MyPostController());
+//        mappings.put("/mypage/myComment", new MyCommentController());
         
         // todo 관련 request URI 추가
         mappings.put("/todo", new CreateTodoController());

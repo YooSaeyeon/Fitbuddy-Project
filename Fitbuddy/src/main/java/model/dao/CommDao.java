@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Community;
-
+import model.User;
 
 /**
  * 사용자 관리를 위해 데이터베이스 작업을 전담하는 DAO 클래스
@@ -24,8 +24,8 @@ public class CommDao {
 	 * 커뮤니티 테이블에 새로운 행 생성 (PK 값은 Sequence를 이용하여 자동 생성)
 	 */
 	public Community create(Community comm) throws SQLException {
-	    String sql = "INSERT INTO COMMWRITE (USERID, CMPOSTID, CONTENT, COMMDATE, USERPROFILE, USERNAME) VALUES (?, cmpostId_seq.nextval, ?, ?, SYSDATE, ?, ?)";
-	    Object[] param = new Object[] { comm.getCmUserId(), comm.getContent(),  comm.getUserProfile(), comm.getUserName() };
+		String sql = "INSERT INTO COMMWRITE (USERID, CMPOSTID, CONTENT, COMMDATE, USERPROFILE, USERNAME) VALUES (?, cmpostId_seq.nextval, ?, SYSDATE, ?, ?)";
+		Object[] param = new Object[] { comm.getCmUserId(), comm.getContent(), comm.getUserProfile(), comm.getUserName() };
 
 	    jdbcUtil.setSqlAndParameters(sql, param);
 
@@ -75,96 +75,7 @@ public class CommDao {
 		return 0;
 	}
 
-	/**
-	 * 주어진  ID에 해당하는 커뮤니티 정보를 데이터베이스에서 찾아 Community 도메인 클래스에 
-	 * 저장하여 반환.
-	 */
-	public Community findCommunity(int commId) throws SQLException {
-		String sql = "SELECT CMPOSTID, CONTENT,  COMMDATE " +
-	              "FROM COMMWRITE c LEFT OUTER JOIN BUDDYUSER u ON c.USERID = u.USERID " +
-	              "WHERE CMPOSTID = ?";
-
-		jdbcUtil.setSqlAndParameters(sql, new Object[] {commId});	// JDBCUtil에 query문과 매개 변수 설정
-		Community comm = null;
-		try {
-			ResultSet rs = jdbcUtil.executeQuery();		// query 실행
-			if (rs.next()) {						// 학생 정보 발견
-				comm = new Community(
-				        rs.getInt("USERID"),
-				        rs.getInt("CMPOSTID"),
-				        rs.getString("CONTENT"),
-//				        rs.getString("IMG"),
-				        rs.getDate("COMMDATE"),
-				        rs.getString("USERPROFILE"),
-				        rs.getString("USERNAME"));
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			jdbcUtil.close();		// resource 반환
-		}
-		return comm;
-	}
-
-	/**
-	 * 전체 커뮤니티 정보를 검색하여 List에 저장 및 반환
-	 */
-//	public List<Community> findCommunityList() throws SQLException {
-//		String sql = "SELECT CMPOSTID, CONTENT, IMG FROM COMMWRITE " +
-//	             "ORDER BY CMPOSTID";
-//		jdbcUtil.setSqlAndParameters(sql, null);		// JDBCUtil에 query문 설정
-//					
-//		try {
-//			ResultSet rs = jdbcUtil.executeQuery();			// query 실행			
-//			List<Community> commList = new ArrayList<Community>();	// Community들의 리스트 생성
-//			while (rs.next()) {
-//				Community comm = new Community(			// Community 객체를 생성하여 현재 행의 정보를 저장
-//						rs.getInt("cmUserId"),
-//						rs.getInt("cmPostId"),
-//						rs.getString("content"),
-//						rs.getString("img"), null);
-//				commList.add(comm);				// List에 Community 객체 저장
-//			}		
-//			return commList;					
-//			
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		} finally {
-//			jdbcUtil.close();		// resource 반환
-//		}
-//		return null;
-//	}
-//	public List<Community> findCommunityList() throws SQLException {
-//	    String sql = "SELECT CMPOSTID, USERID, CONTENT, IMG, USERPROFILE, COMMDATE, USERNAME FROM COMMWRITE " +
-//	                 "ORDER BY CMPOSTID";
-//	    jdbcUtil.setSqlAndParameters(sql, null);
-//
-//	    try {
-//	        ResultSet rs = jdbcUtil.executeQuery();
-//	        List<Community> commList = new ArrayList<>();
-//
-//	        while (rs.next()) {
-//	        	Community comm = new Community(
-//	        	        rs.getInt("USERID"),
-//	        	        rs.getInt("CMPOSTID"),
-//	        	        rs.getString("CONTENT"),
-//	        	        rs.getString("IMG"),
-//	        	        rs.getDate("COMMDATE"),
-//	        	        rs.getString("USERPROFILE"),
-//	        	        rs.getString("USERNAME"));
-//	            commList.add(comm);
-//	        }
-//
-//	        return commList;
-//
-//	    } catch (Exception ex) {
-//	        ex.printStackTrace();
-//	    } finally {
-//	        jdbcUtil.close();
-//	    }
-//
-//	    return null;
-//	}
+	
 	
 	/*커뮤니티 글 목록 조회 부분*/
 	public List<Community> findCommunityPostList() throws SQLException {
@@ -228,5 +139,30 @@ public class CommDao {
 	    }
 	    return null;
 	}
+	
+	  public User getUserById(int userId) {
+	        User user = null;
+	        String query = "SELECT * FROM buddyUser WHERE userId = ?";
+
+	        Object[] parameters = { userId };
+
+	        jdbcUtil.setSqlAndParameters(query, parameters);
+
+	        try (ResultSet resultSet = jdbcUtil.executeQuery()) {
+	            if (resultSet.next()) {
+	                user = new User();
+	                user.setUserId(resultSet.getInt("userId"));
+	                user.setNickname(resultSet.getString("nickname"));
+	                user.setPhoto(resultSet.getString("photo"));
+	              
+	        
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        return user;
+	    }
+	
 	
 }

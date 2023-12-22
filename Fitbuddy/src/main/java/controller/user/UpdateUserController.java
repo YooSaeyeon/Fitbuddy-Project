@@ -1,66 +1,84 @@
 package controller.user;
 
-/*import java.util.List;
+import java.io.File;
+import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import controller.Controller;
-import model.service.UserManager;
-
 import model.User;
+import model.dao.UserDAO;
+
+import org.apache.commons.fileupload.*;
+import org.apache.commons.fileupload.disk.*;
+import org.apache.commons.fileupload.servlet.*;
 
 public class UpdateUserController implements Controller {
-    private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
-
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response)	throws Exception {
- 
-    	if (request.getMethod().equals("GET")) {	
-    		// GET request: 회원정보 수정 form 요청	
-    		// 원래는 UpdateUserFormController가 처리하던 작업을 여기서 수행
-    		String updateId = request.getParameter("userId");
-    		String updateNickname = request.getParameter("nickname"); )
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-    		log.debug("UpdateForm Request : {}", updateId);
-    		
-    		UserManager manager = UserManager.getInstance();
-			User user = manager.findUser(updateId, updateNickname);	// 수정하려는 사용자 정보 검색
-			request.setAttribute("user", user);			
 
-			HttpSession session = request.getSession();
-			if (UserSessionUtils.isLoginUser(updateId, session) ||
-				UserSessionUtils.isLoginUser("admin", session)) {
-		
-								
-				
-				return "/user/updateForm.jsp";   // 검색한 사용자 정보 및 커뮤니티 리스트를 updateForm으로 전송     
-			}    
-			
-			// else (수정 불가능한 경우) 사용자 보기 화면으로 오류 메세지를 전달
-			request.setAttribute("updateFailed", true);
-			request.setAttribute("exception", 
-					new IllegalStateException("타인의 정보는 수정할 수 없습니다."));            
-			return "/user/view.jsp";	// 사용자 보기 화면으로 이동 (forwarding)
-	    }	
-    	
-    	// POST request (회원정보가 parameter로 전송됨)
-    	User updateUser = new User(
-    		request.getParameter("nickname"),
-    		request.getParameter("password"),
-    		request.getParameter("gender")
-    		);
+        // 전송된 요청 메시지의 타입이 multipart 인지 여부를 체크
+        boolean check = ServletFileUpload.isMultipartContent(request);
+        if (check) {
+            ServletContext context = request.getServletContext();
+            String path = context.getRealPath("/uploads");
+            File dir = new File(path);
 
-    	log.debug("Update User : {}", updateUser);
+            if (!dir.exists()) dir.mkdir();
 
-		UserManager manager = UserManager.getInstance();
-//		manager.update(updateUser);			
-        return "redirect:/user/list";			
+            int userId = 0;
+			try {
+                DiskFileItemFactory factory = new DiskFileItemFactory();
+                factory.setSizeThreshold(10 * 1024);
+                factory.setRepository(dir);
+
+                ServletFileUpload upload = new ServletFileUpload(factory);
+                upload.setSizeMax(10 * 1024 * 1024);
+                upload.setHeaderEncoding("utf-8");
+
+                List<FileItem> items = (List<FileItem>) upload.parseRequest(request);
+
+                for (FileItem item : items) {
+                    if (!item.isFormField() && item.getFieldName().equals("profilePhoto")) {
+                        String oriFilename = item.getName();
+                        if (oriFilename == null || oriFilename.trim().length() == 0) continue;
+
+                        String filename = UUID.randomUUID().toString() + "_" + oriFilename.substring(oriFilename.lastIndexOf("\\") + 1);
+
+                        File file = new File(dir, filename);
+                        item.write(file);
+
+                        // 파일 업로드 후 userId에 해당하는 사용자 정보의 프로필 사진 업데이트 로직
+                        
+                        
+//                     // 로그인한 사용자 식별
+                        HttpSession session = request.getSession(false); // 현재 세션이 있는지 확인
+                        if (session != null) {
+                            User loggedInUser = (User) session.getAttribute("loggedInUser");
+                            if (loggedInUser != null) {
+                                userId = loggedInUser.getUserId(); // 현재 로그인한 사용자의 ID를 얻음
+                                UserDAO userDAO = new UserDAO(); // UserDAO 인스턴스 생성
+                                userDAO.updateProfilePhoto(userId, filename); // 사용자 정보에 프로필 사진 업데이트
+                            }
+                        }
+                        
+                    }
+                }
+            } catch (FileUploadException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            request.setAttribute("userId", userId);
+        }
+
+        return "redirect:/mypage/profile";
+
     }
 }
-
-*/

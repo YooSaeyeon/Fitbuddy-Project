@@ -27,7 +27,7 @@ public class LoginController implements Controller {
                 session.setAttribute("userId", userId);
 
                 // 로그인 성공 시 "/"로 리다이렉트
-                return "redirect:/";
+                return "redirect:/main/main";
             } else {
                 request.setAttribute("loginFailed", true);
                 return "/user/loginForm.jsp";

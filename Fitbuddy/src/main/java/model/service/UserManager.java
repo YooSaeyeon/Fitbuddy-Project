@@ -93,9 +93,41 @@ public class UserManager {
 			return user;
 		}
 	
+	public void updateProfilePhoto(int userId, String filename) {
+	    // UserDAO를 생성하고 해당 메서드를 호출해 사용자의 프로필 사진을 업데이트합니다.
+		UserDAO userDAO = new UserDAO();
+		userDAO.updateProfilePhoto(userId, filename);
+		System.out.println("프로필 사진 업데이트 완료");
+	}
+	
 	public Community createCommunity(Community comm) throws SQLException {
 		return commDAO.create(comm);		
 	}
+	public List<Community> findCommunityPostList() throws SQLException {
+		return commDAO.findCommunityPostList();
+	}
+	public Community findPostById(int CMPOSTID) throws SQLException {
+		return commDAO.findPostById(CMPOSTID);		
+	}
+	
+	public User getUserById(int userId) {
+		 try {
+           User user = commDAO.getUserById(userId);
+
+           if (user != null) {
+               System.out.println("User ID in COMM: " + user.getUserId());
+           } else {
+               System.out.println("User is null in comm");
+           }
+
+           return user;
+       } catch (Exception e) {
+           e.printStackTrace();
+           return null;
+       }
+	}
+	
+	
 	
 	public TodoDTO createTodo(TodoDTO todo) throws SQLException {
 	    return todoDAO.create(todo);    
@@ -108,6 +140,7 @@ public class UserManager {
 	public TodoCommentDTO createTodo(TodoCommentDTO todo) throws SQLException {
 	    return todoCommentDAO.create(todo);    
 	}
+
 
 	public User getUserById(int userId) {
 		 try {
@@ -130,6 +163,7 @@ public class UserManager {
 	public List<Community> findCommunityPostList() throws SQLException {
 		return commDAO.findCommunityPostList();
 	}
+
 	
 	public List<TodoDTO> findTodoList(int userId){
 	    try {
@@ -139,8 +173,7 @@ public class UserManager {
 	    	return null;
 	    }
 	}
-	
-	
+
 	
 	public List<TodoCommentDTO> findTodoCommList(int todopostId) {
 		try {
@@ -151,6 +184,7 @@ public class UserManager {
 		}
 	}
 	
+
 	public UserDAO getUserDAO() {
 		return this.userDAO;
 	}

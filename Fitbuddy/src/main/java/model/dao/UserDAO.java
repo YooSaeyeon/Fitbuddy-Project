@@ -116,7 +116,28 @@ public class UserDAO {
 			}
 			return false;
 		}
-	
+
+		public void updateProfilePhoto(int userId, String filename) {
+		    String sql = "UPDATE BUDDYUSER SET PHOTO = ? WHERE USERID = ?";
+		    Object[] param = new Object[] { filename, userId };
+
+		    jdbcUtil.setSqlAndParameters(sql, param);
+
+		    try {
+		        int result = jdbcUtil.executeUpdate();
+		        if (result > 0) {
+		            System.out.println("Profile photo updated successfully for user ID: " + userId);
+		        } else {
+		            System.out.println("Failed to update profile photo for user ID: " + userId);
+		        }
+		    } catch (Exception ex) {
+		        jdbcUtil.rollback();
+		        ex.printStackTrace();
+		    } finally {
+		        jdbcUtil.commit();
+		        jdbcUtil.close();
+		    }
+		}
 
 	
 	

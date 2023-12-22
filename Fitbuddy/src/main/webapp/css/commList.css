@@ -127,7 +127,7 @@
 }
 
 #detail_name {
-  color: black;
+  color: white;
   font-family: Inter;
   font-size: 15px;
   font-style: normal;
@@ -158,20 +158,80 @@
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
-  color: black;
+  color: white;
   margin-top: 20px;
   margin-left: 10px;
   text-align: left;
 }
 
-	#post_detailView {
-	  box-sizing: border-box;
-	  position: relative;
-	  margin-top: 10px auto;
-	  height: 340px;
-	  width: 300px;
-	  left: 22px;
-	  right: 23px;
-	  background: white;
-	  border-radius: 10px;
-	}	
+	
+	
+#commentList1 {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.commentContainer {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #000000;
+    border: 2px solid #ffffff;
+    color: #ffffff; /* 글씨 색상을 화이트로 설정 */
+}
+
+.commentContainer .commentProfileImage img {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin-right: 10px;
+}
+
+.commentContainer .profileInfo {
+    flex: 1; /* 남은 공간을 차지하도록 설정 */
+}
+
+.commentContainer .comName {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.commentContainer .comContent {
+    font-size: 14px;
+}
+
+#commentForm1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Adjust margin-top as needed */
+}
+
+
+
+#commentForm1 textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+#commentForm1 button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#commentForm1 img {
+    width: 30px;
+    height: auto;
+    filter: invert(100%); 
+}
+
+#commentForm1 button:hover img {
+    filter: invert(0%); 
+}

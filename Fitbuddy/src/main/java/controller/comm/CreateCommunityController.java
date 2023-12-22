@@ -8,81 +8,56 @@ import org.slf4j.LoggerFactory;
 import controller.Controller;
 import model.Community;
 import model.service.UserManager;
-
+import model.User;
 
 public class CreateCommunityController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(CreateCommunityController.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // 사용자가 입력한 값들을 받아옴
-        String content = request.getParameter("content");
-//        String img = request.getParameter("img");
-
-        // 세션에서 사용자 ID 가져오기
-        HttpSession session = request.getSession();
-        Object userIdObject = session.getAttribute("userId");
-
-        try {
-            int userId = (userIdObject != null) ? Integer.parseInt(userIdObject.toString()) : 1;
-            log.debug("User ID from session: {}", userId);
-
-            // UserManager를 통해 커뮤니티 생성
-            UserManager manager = UserManager.getInstance();
-            
-         // Community 객체를 생성할 때 빈 생성자 대신 생성자를 통해 필요한 값들을 초기화
-            Community comm = new Community(userId, content,  null, null);
-            manager.createCommunity(comm);
-
-            log.debug("Create Community : {}", comm);
-
-            // 성공 시 커뮤니티 리스트 화면으로 redirect
-            return "redirect:/community/commList";
-        } catch (Exception e) {
-            // 실패 시 입력 form으로 forwarding
-            request.setAttribute("creationFailed", true);
-            request.setAttribute("exception", e);
-
-            // Comm 객체를 생성하지 않도록 수정
-            return "community/create";
+        // "GET" 요청일 때 글 작성 페이지로 이동
+        if (request.getMethod().equals("GET")) {
+            return "/comm/comm.jsp";
         }
+
+        // 세션에서 현재 로그인한 사용자 정보 확인
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+            if (loggedInUser != null) {
+                // 요청에서 커뮤니티 내용 및 사용자 ID 가져오기
+                String content = request.getParameter("content");
+//                Object userIdObject = session.getAttribute("userId");
+
+                try {
+                    
+                    int userId = loggedInUser.getUserId();
+                    log.debug("세션에서 가져온 사용자 ID: {}", userId);
+
+                   
+                    UserManager manager = UserManager.getInstance();
+                    User user = manager.getUserById(userId);
+
+                    Community comm = new Community(userId, content, user.getPhoto(), user.getNickname());
+                    manager.createCommunity(comm);
+
+                    log.debug("커뮤니티 생성 완료: {}", comm);
+
+
+                    return "redirect:/community/commList";
+                } catch (Exception e) {
+  
+                    request.setAttribute("creationFailed", true);
+                    request.setAttribute("exception", e);
+
+            
+                    return "community/create";
+                }
+            }
+        }
+
+
+        return "redirect:/user/login"; 
     }
 }
-
-//        // 추가: 세션에서 userIdObject가 null이 아닌지 확인
-//        if (userIdObject != null) {
-//            Community comm = null; // comm 객체를 선언하고 초기화
-//
-//            try {
-//                // userIdObject가 null이 아니라면 int로 변환하여 userId에 저장
-////                int userId = (int) userIdObject;
-//                
-//            	int userId = (userIdObject != null) ? Integer.parseInt(userIdObject.toString()) : 1;
-//            	log.debug("User ID from session: {}", userId);
-//
-//                // comm의 재선언 제거
-//                comm = new Community(userId, 0, content, img, null, null, null);
-//
-//                // UserManager를 통해 커뮤니티 생성
-//                UserManager manager = UserManager.getInstance();
-//                manager.createCommunity(comm);
-//
-//                log.debug("Create Community : {}", comm);
-//
-//                // 성공 시 커뮤니티 리스트 화면으로 redirect
-//                return "redirect:/comm/comm";
-//            } catch (Exception e) {
-//                // 실패 시 입력 form으로 forwarding
-//                request.setAttribute("creationFailed", true);
-//                request.setAttribute("exception", e);
-//                request.setAttribute("comm", comm);
-//
-//                return "/comm/comm";
-//            }
-//
-//        } else {
-//            // userId가 null일 경우에 대한 처리 (예: 로그인 페이지로 리다이렉트 등)
-//            log.debug("User ID is null in session. Redirecting to login page.");
-//            return "redirect:/"; // 예시로 로그인 페이지로 리다이렉트
-//        }
-//    }

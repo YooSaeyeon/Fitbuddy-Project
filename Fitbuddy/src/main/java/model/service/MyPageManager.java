@@ -1,6 +1,8 @@
 package model.service;
 
 import java.util.List;
+
+import model.Comment;
 import model.Community;
 import model.User;
 import model.dao.MypageDAO;
@@ -39,5 +41,13 @@ public class MyPageManager {
          }
     }
     
-    // 다른 필요한 메서드들을 추가로 구현해야 함
+    public List<Comment> getUserComments(int userId) {
+        try {
+            return mypageDAO.getUserComments(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+ 
 }

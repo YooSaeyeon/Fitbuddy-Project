@@ -2,6 +2,7 @@ package controller.todo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -55,18 +56,32 @@ public class CreateTodoController implements Controller {
 
                         // 생성된 TO DO 목록을 어딘가에 저장 (예: 세션에 저장)
                         if (createdTodo != null) {
-                            ArrayList<TodoDTO> todoList = (ArrayList<TodoDTO>) session.getAttribute("todoList");
-                            if (todoList == null) {
-                            	todoList = new ArrayList<TodoDTO>();
-                            	//session.setAttribute("todoList", todoList);
-                            }
-                            todoList.add(createdTodo);
-                            session.setAttribute("todoList", todoList);
-                            log.debug("Create Todo : {}", createdTodo);
+//                            ArrayList<TodoDTO> todoList = (ArrayList<TodoDTO>) session.getAttribute("todoList");
+//                            if (todoList == null) {
+//                            	todoList = new ArrayList<TodoDTO>();
+//                            }
+//                            todoList.add(createdTodo);
+//                            session.setAttribute("todoList", todoList);
+//                            log.debug("Create Todo : {}", createdTodo);
+                        	
+                        	// find로 가져와서 리다이렉션하기
+//                            
+//                            System.out.println("User todo list size: " + todoList.size());
+                        	
+                        	// TodoDao를 통해 TODO 목록을 조회
+                            List<TodoDTO> todoList = todoDao.findTodoList(loggedInUser.getUserId());
+
+                            // 조회된 TODO 목록을 request 속성에 저장
+                            request.setAttribute("todoList", todoList);
+
+                            // 사용자 ID를 모델에 추가
+                            request.setAttribute("userId", loggedInUser.getUserId());
+
+                            System.out.println("User todo list size: " + todoList.size());
+                            // "/todo/todolist.jsp" 페이지로 이동
                             
-                            
-                            // 성공 시 커뮤니티 리스트 화면으로 redirect
-                            return "redirect:/todomain.jsp";
+                         // 성공 시 TodoList 화면으로 redirect
+                            return "redirect:/todo/todolist?userId=" + loggedInUser.getUserId();
                         } else {
                             // 실패 시 입력 form으로 forwarding
                             request.setAttribute("creationFailed", true);
@@ -83,7 +98,7 @@ public class CreateTodoController implements Controller {
                     request.setAttribute("exception", e);
                     log.error("할 일 생성 중 오류 발생", e);
                     e.printStackTrace();
-                    return "Todo item created successfully";
+                    return "redirect:/todo/todolist?userId=" + loggedInUser.getUserId();
                     //return "/todo/todomain.jsp";
                 }
             } else {

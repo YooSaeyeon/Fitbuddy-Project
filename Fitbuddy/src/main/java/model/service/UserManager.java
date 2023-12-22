@@ -1,6 +1,7 @@
 package model.service;
 
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -132,16 +133,58 @@ public class UserManager {
 	    return todoDAO.create(todo);    
 	}
 	
+	public TodoDTO findPostById(int todopostId) throws SQLException {
+		return todoDAO.findPostById(todopostId);
+	}
+	
 	public TodoCommentDTO createTodo(TodoCommentDTO todo) throws SQLException {
 	    return todoCommentDAO.create(todo);    
 	}
 
 
-	
-	public List<TodoDTO> findTodoListByUserId(int userId) throws SQLException {
-	    return todoDAO.findTodoListByUserId(userId);
+	public User getUserById(int userId) {
+		 try {
+          User user = todoCommentDAO.getUserById(userId);
+
+          if (user != null) {
+              System.out.println("User ID in COMM: " + user.getUserId());
+          } else {
+              System.out.println("User is null in comm");
+          }
+
+          return user;
+      } catch (Exception e) {
+          e.printStackTrace();
+          return null;
+      }
 	}
 	
+	
+	public List<Community> findCommunityPostList() throws SQLException {
+		return commDAO.findCommunityPostList();
+	}
+
+	
+	public List<TodoDTO> findTodoList(int userId){
+	    try {
+	    	return todoDAO.findTodoList(userId);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    	return null;
+	    }
+	}
+
+	
+	public List<TodoCommentDTO> findTodoCommList(int todopostId) {
+		try {
+			return todoCommentDAO.findTodoCommList(todopostId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+
 	public UserDAO getUserDAO() {
 		return this.userDAO;
 	}

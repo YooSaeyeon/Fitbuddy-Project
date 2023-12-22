@@ -17,6 +17,7 @@ public class TodoDTO {
         this.todopostId = todopostId;
     }
 	
+	
 	public String getFormattedCreatedAt() {
         // Format the date using SimpleDateFormat
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");

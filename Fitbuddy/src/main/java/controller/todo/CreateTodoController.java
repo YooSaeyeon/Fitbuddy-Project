@@ -56,17 +56,9 @@ public class CreateTodoController implements Controller {
 
                         // 생성된 TO DO 목록을 어딘가에 저장 (예: 세션에 저장)
                         if (createdTodo != null) {
-//                            ArrayList<TodoDTO> todoList = (ArrayList<TodoDTO>) session.getAttribute("todoList");
-//                            if (todoList == null) {
-//                            	todoList = new ArrayList<TodoDTO>();
-//                            }
-//                            todoList.add(createdTodo);
-//                            session.setAttribute("todoList", todoList);
-//                            log.debug("Create Todo : {}", createdTodo);
                         	
-                        	// find로 가져와서 리다이렉션하기
-//                            
-//                            System.out.println("User todo list size: " + todoList.size());
+                        	// 생성된 TO DO 목록을 어딘가에 저장 (예: 세션에 저장)
+                            session.setAttribute("createdAt", createdTodo.getCreatedAt());
                         	
                         	// TodoDao를 통해 TODO 목록을 조회
                             List<TodoDTO> todoList = todoDao.findTodoList(loggedInUser.getUserId());

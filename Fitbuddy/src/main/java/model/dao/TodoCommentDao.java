@@ -67,8 +67,8 @@ public class TodoCommentDao {
     }
 
 	/* TODO 글 목록 조회 부분*/
-	public List<TodoCommentDTO> findTodoCommList(int todopostId) throws SQLException{
-		JDBCUtil jdbcUtil = new JDBCUtil();
+	public List<TodoCommentDTO> findTodoCommList(int userId, int todopostId) throws SQLException{
+		List<TodoCommentDTO> commentList = new ArrayList<>();
 	    String sql = "SELECT TODOPOSTID, CONTENT, TODOCOMMENTID, USERID, TODOCHECK FROM TODOCOMMENT " +
 	                 "WHERE TODOPOSTID = ? " +
 	                 "ORDER BY TODOCOMMENTID";
@@ -79,28 +79,25 @@ public class TodoCommentDao {
 	    jdbcUtil.setSqlAndParameters(sql,  new Object[]{todopostId});
 	    
 	    
-	    try {
-	    	ResultSet rs = jdbcUtil.executeQuery();
-	    	List<TodoCommentDTO> commentList = new ArrayList<>();
-	    	
+	    try (ResultSet rs = jdbcUtil.executeQuery()){
 	    	while (rs.next()) {
 	    		TodoCommentDTO comment = new TodoCommentDTO(
 	    				rs.getInt("TODOPOSTID"),
 	    				rs.getString("CONTENT"),
-	    				rs.getInt("TODOCOMMENTID"),
 	    				rs.getInt("USERID"),
 	    				rs.getInt("TODOCHECK")
 	    				);
 	    		commentList.add(comment);
+	    		System.out.println("User todo list size: " + commentList.size());
 	    	}
-	    	return commentList;
+	    	//return commentList;
 	    } catch (Exception ex) {
 	    	ex.printStackTrace();
 	    } finally {
 	    	jdbcUtil.close();
 	    }
 	    
-	    return null;
+	    return commentList;
 
 	}
 	

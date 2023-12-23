@@ -22,8 +22,12 @@ public class ViewTodoController implements Controller {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession(false);
+		// 여기서 지금 postId 안 받아와짐
 		User loggedInUser = (User) session.getAttribute("loggedInUser");
-		TodoDTO todopostId = (TodoDTO) session.getAttribute("todopostId");
+		Integer todopostId = (Integer) session.getAttribute("todopostId");
+		
+		
+		
 
 		if (loggedInUser != null) {
 			int userId = loggedInUser.getUserId();
@@ -36,9 +40,15 @@ public class ViewTodoController implements Controller {
 				// loggedInPost가 null이 아니면 해당 Todo를 가져오고, null이면 새로운 Todo 생성
 				int postId;
 				if (todopostId != null) {
-                    postId = todopostId.getTodopostId();
+                    postId = todopostId;
+                    todopostId = Integer.parseInt(request.getParameter("postId"));
+                    session.setAttribute("todopostId", todopostId);
+                    log.debug("todopostId from session (ViewTodoController): {}", todopostId);
                 } else {
                     postId = Integer.parseInt(request.getParameter("postId"));
+                    todopostId = Integer.parseInt(request.getParameter("postId"));
+                    session.setAttribute("todopostId", todopostId);
+                    log.debug("todopostId from session (ViewTodoController): {}", todopostId);
                 }
 			
 				TodoDTO todo = manager.findPostById(postId);
@@ -46,13 +56,15 @@ public class ViewTodoController implements Controller {
 				log.debug("Post Id : {}", postId);
 				log.debug("Todo date: {}", todo.getCreatedAt());
 				
+				session.setAttribute("createdAt", todo.getCreatedAt());
+				
 				
 
 				/* 댓글 */
 				
 				TodoCommentDao todocommentDao = new TodoCommentDao();
 
-				List<TodoCommentDTO> commentList = todocommentDao.findTodoCommList(postId);
+				List<TodoCommentDTO> commentList = todocommentDao.findTodoCommList(userId, postId);
 				request.setAttribute("commentList", commentList);
 
 				return "/todo/todoPost.jsp";

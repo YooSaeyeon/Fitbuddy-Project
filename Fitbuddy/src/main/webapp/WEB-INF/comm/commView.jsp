@@ -1,4 +1,3 @@
-
 <%@page contentType="text/html; charset=utf-8" %>
 <%@page import="model.*" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -25,10 +24,16 @@
      <div id="scroll">
             <div id="post_detailView">
                 <div id="detail_name">${community.userName}</div>
-                <!-- <div id="detail_profile">
-                    <img src="<c:url value='${community.userProfile}' />" />
-                </div> -->
-               
+                <div class="communityProfileImage" style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin-right: 10px;">
+    <c:choose>
+        <c:when test="${empty community.userProfile}">
+            <img src="<c:url value='/images/communityProfile.png' />" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
+        </c:when>
+        <c:otherwise>
+            <img src="<c:url value='/uploads/${community.userProfile}' />" alt="Profile Image" style="width: 100%; height: 100%; object-fit: cover;">
+        </c:otherwise>
+    </c:choose>
+</div>
                 <div id="detail_date">${community.commDate}</div>
                 
                 <hr style="height: 2px; margin-top: 40px; background-color: white" />
@@ -45,7 +50,7 @@
                         <img src="<c:url value='/images/commentProfile.png' />">
                     </c:when>
                     <c:otherwise>
-                        <img src="<c:url value='${comment.userProfile}' />">
+                        <img src="<c:url value='/uploads/${comment.userProfile}' />">
                     </c:otherwise>
                 </c:choose>
             </div>

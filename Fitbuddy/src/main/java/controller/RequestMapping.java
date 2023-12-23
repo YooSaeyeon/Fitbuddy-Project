@@ -18,39 +18,28 @@ public class RequestMapping {
 
     public void initMapping() {
     	// 각 uri에 대응되는 controller 객체를 생성 및 저장
-        mappings.put("/", new ForwardController("index.jsp"));
+    	 mappings.put("/", new ForwardController("index.jsp"));
+         mappings.put("/main/main", new ForwardController("/main/main.jsp"));
         mappings.put("/user/loginform", new ForwardController("/user/loginForm.jsp")); //로그인 폼으로 이동
         mappings.put("/user/login", new LoginController()); //로그인 버튼을 클릭했을 때 연산 실행
         mappings.put("/user/logout", new LogoutController());
-//        mappings.put("/user/list", new ListUserController());
-//        mappings.put("/user/view", new ViewUserController());
+
         
         // 회원 가입 폼 요청과 가입 요청 처리 병합 (폼에 커뮤니티 선택 메뉴 추가를 위함)
-//      mappings.put("/user/register/form", new ForwardController("/user/registerForm.jsp"));
-//      mappings.put("/user/register", new RegisterUserController());
+
         mappings.put("/user/register", new RegisterUserController());
 
-        // 사용자 정보 수정 폼 요청과 수정 요청 처리 병합
-//      mappings.put("/user/update/form", new UpdateUserFormController());
-//      mappings.put("/user/update", new UpdateUserController());        
+        // 사용자 정보 수정 폼 요청과 수정 요청 처리 병합   
         mappings.put("/user/update", new UpdateUserController());
-//        
-//        mappings.put("/user/delete", new DeleteUserController());
-        
-        // 커뮤니티 관련 request URI 추가
-        	mappings.put("/comm/comm", new ListCommunityController()); 
-//        mappings.put("/community/list", new ListCommunityController());
-//        mappings.put("/community/view", new ViewCommunityController());
-//        mappings.put("/community/create/form", new ForwardController("/community/creationForm.jsp"));
-        	mappings.put("/community/create", new CreateCommunityController());
-//        mappings.put("/community/update", new UpdateCommunityController());
-        
+
+     // 커뮤니티 관련 request URI
+    	mappings.put("/community/commList", new ListCommunityController()); 
+    	mappings.put("/community/view/{CMPOSTID}", new ViewCommunityController());
+    	mappings.put("/community/create", new CreateCommunityController());
+    	mappings.put("/community/comment", new CommentController());
 
         mappings.put("/mypage/profile", new ProfileController());
-//        mappings.put("/mypage/myMatching", new MyMatchingController());
-//        mappings.put("/mypage/myPost", new MyPostController());
-//        mappings.put("/mypage/myComment", new MyCommentController());
-        
+
         // todo 관련 request URI 추가
         mappings.put("/todo", new CreateTodoController());
         mappings.put("/todo/todolist", new ListTodoController());
@@ -58,13 +47,46 @@ public class RequestMapping {
         mappings.put("/todo/todolist/comm/comm", new CreateTodoCommController());
         
 
-        
+     
         
         logger.info("Initialized Request Mapping!");
     }
 
-    public Controller findController(String uri) {	
-    	// 주어진 uri에 대응되는 controller 객체를 찾아 반환
-        return mappings.get(uri);
+    public Controller findController(String uri) {
+        // 디버그 코드
+        logger.debug("uri search debug code: {}", uri);
+
+       
+        Controller controller = mappings.get(uri);
+
+        if (controller == null) {
+            //post view 중괄호 읽어오기
+            for (String key : mappings.keySet()) {
+                if (isUri(uri, key)) {
+                    controller = mappings.get(key);
+                    break;
+                }
+            }
+        }
+
+        return controller;
+    }
+
+    // 게시글 디테일 조회할때, 게시글 postid 매칭용 
+    private boolean isUri(String uri, String pattern) {
+        String[] uriParts = uri.split("/");
+        String[] patternParts = pattern.split("/");
+
+        if (uriParts.length != patternParts.length) {
+            return false;
+        }
+
+        for (int i = 0; i < uriParts.length; i++) {
+            if (!patternParts[i].equals(uriParts[i]) && !patternParts[i].startsWith("{") && !patternParts[i].endsWith("}")) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

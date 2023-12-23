@@ -106,11 +106,11 @@ public class UserManager {
 	public List<Community> findCommunityPostList() throws SQLException {
 		return commDAO.findCommunityPostList();
 	}
-	public Community findPostById(int CMPOSTID) throws SQLException {
+	public Community findCommPostById(int CMPOSTID) throws SQLException {
 		return commDAO.findPostById(CMPOSTID);		
 	}
 	
-	public User getUserById(int userId) {
+	public User getCommUserById(int userId) {
 		 try {
            User user = commDAO.getUserById(userId);
 
@@ -159,10 +159,6 @@ public class UserManager {
       }
 	}
 	
-	
-	public List<Community> findCommunityPostList() throws SQLException {
-		return commDAO.findCommunityPostList();
-	}
 
 	
 	public List<TodoDTO> findTodoList(int userId){

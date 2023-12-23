@@ -37,7 +37,7 @@ public class CreateCommunityController implements Controller {
 
                    
                     UserManager manager = UserManager.getInstance();
-                    User user = manager.getUserById(userId);
+                    User user = manager.getCommUserById(userId);
 
                     Community comm = new Community(userId, content, user.getPhoto(), user.getNickname());
                     manager.createCommunity(comm);

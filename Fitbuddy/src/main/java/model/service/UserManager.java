@@ -175,9 +175,9 @@ public class UserManager {
 	}
 
 	
-	public List<TodoCommentDTO> findTodoCommList(int todopostId) {
+	public List<TodoCommentDTO> findTodoCommList(int userId, int todopostId) {
 		try {
-			return todoCommentDAO.findTodoCommList(todopostId);
+			return todoCommentDAO.findTodoCommList(userId, todopostId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

@@ -36,6 +36,16 @@
 	top: 170px;
 }
 
+#button-box {
+	border-radius: 10px;
+    background-color: black;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+    border: 2px solid white; /* 흰색 테두리 추가 */
+    vertical-align: middle; /* 세로 정렬을 중앙으로 조절 */
+}
+
 .submit-button {
 	position: absolute;
 	top: 40%;
@@ -54,6 +64,7 @@
 .list-button {
 	position: absolute;
 	top: 60%;
+	left: 50%;
 	background: transparent;
 	border: none;
 	color: #ffffff;
@@ -78,18 +89,22 @@
 				<input type="hidden" name="userId" value="${loggedInUser.userId}" />
 				<input type="hidden" name="todopostId" value="${todopostId}" /> <input
 					type="hidden" name="createdAt" value="${created_at}" />
-				<button type="submit" name="submit_button" value="submit_todo"
-					class="submit-button" style="width: 300px;">TO DO 작성+</button>
+				<div>
+					<button type="submit" name="submit_button" value="submit_todo"
+						class="submit-button" style="width: 300px;">TO DO 생성</button>
+				</div>
 			</form>
 		</div>
 
 		<div>
-			<form action="/Fitbuddy/todo/todolist"  method="get">
-			<input type="hidden" name="userId" value="${loggedInUser.userId}" />
-				
-				<button type="submit" class="list-button"
-					style="width: 300px; margin-left: -145px; margin-top: -90px;">
-					TO DO 조회</button>
+			<form action="/Fitbuddy/todo/todolist" method="get">
+				<input type="hidden" name="userId" value="${loggedInUser.userId}" />
+
+				<div>
+					<button type="submit" class="list-button"
+						style="width: 290px; margin-left: -145px; margin-top: -90px;">
+						TO DO 조회</button>
+				</div>
 			</form>
 		</div>
 	</div>
@@ -127,7 +142,7 @@
 
 		// main페이지 이동
 		function redirectMainPage() {
-			window.location.href = "${pageContext.request.contextPath}/";
+			window.location.href = "${pageContext.request.contextPath}/main/main";
 		}
 	</script>
 </body>

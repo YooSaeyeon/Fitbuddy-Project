@@ -138,7 +138,7 @@
          
         // main페이지 이동
         function redirectMainPage() {
-            window.location.href = "${pageContext.request.contextPath}/";
+            window.location.href = "${pageContext.request.contextPath}/main/main";
         }
          
          
